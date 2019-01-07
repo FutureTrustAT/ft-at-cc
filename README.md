@@ -23,3 +23,14 @@ The configuration file `config.properties` contains all settings available for t
 * **`keystore.password`**: the password needed to read the keystore. Empty values are possible but not recommended.
 * **`keystore.key.alias`**: the alias of the private key within the keystore.
 * **`keystore.key.password`**: the password needed to read the private key within the keystore.
+* **`directory.log`**: the writable directory where the logs should be written to
+* **`directory.outgoing`**: the writable directory where outgoing, unsigned eInvoices should be placed
+* **`directory.response.success`**: the writable directory where successful responses should be stored
+* **`directory.response.error`**: the writable directory where failed responses should be stored
+
+# e-Invoices
+
+This client supports only e-Invoices in the formats ebInterface 4.x. Later versions are not supported, because they don't support electronic signatures anymore. Respective XML Schemas and documentation (mainly in German) is available at https://www.wko.at/service/netzwerke/ebinterface-fruehere-version-xml-rechnungsstandard.html - this project contains example invoices, so you don't need to start from scratch.
+
+Before transmission it is recommended to verify the consistency of the eInvoice manually at https://test.erechnung.gv.at/erb?locale=en_GB&p=tec_test_upload - only if the eInvoice is deemed valid there, it will be accepted and validated.
+
