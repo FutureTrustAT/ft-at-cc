@@ -12,7 +12,6 @@ Use this client to sign and send electronic invoices to `e-rechnung.gv.at` where
 * A writable "outgoing" directory for eInvoices to be signed and sent must be present
 * A writable "success" directory for the responses of successful eInvoice transmissions 
 * A writable "error" directory for responses of failed eInvoices transmissions 
-* A writable "logs" directory for log files 
 
 # Configuration
 
@@ -23,7 +22,6 @@ The configuration file `config.properties` contains all settings available for t
 * **`keystore.password`**: the password needed to read the keystore. Empty values are possible but not recommended.
 * **`keystore.key.alias`**: the alias of the private key within the keystore.
 * **`keystore.key.password`**: the password needed to read the private key within the keystore.
-* **`directory.log`**: the writable directory where the logs should be written to
 * **`directory.outgoing`**: the writable directory where outgoing, unsigned eInvoices should be placed
 * **`directory.response.success`**: the writable directory where successful responses should be stored
 * **`directory.response.error`**: the writable directory where failed responses should be stored
