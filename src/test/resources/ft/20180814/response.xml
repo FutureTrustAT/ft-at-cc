@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<etsival:VerifyResponse xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" xmlns:dss1="urn:oasis:names:tc:dss:1.0:core:schema" xmlns:ades="urn:oasis:names:tc:dss:1.0:profiles:AdES:schema#" xmlns:vr="urn:oasis:names:tc:dss:1.0:profiles:verificationreport:schema#" xmlns:async="urn:oasis:names:tc:dss:1.0:profiles:asynchronousprocessing:1.0" xmlns:timestamping="urn:oasis:names:tc:dss:1.0:profiles:TimeStamp:schema#" xmlns:dss="urn:oasis:names:tc:dss:2.0:core:schema" xmlns:saml1="urn:oasis:names:tc:SAML:1.0:assertion" xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:xades132="http://uri.etsi.org/01903/v1.3.2#" xmlns:xades141="http://uri.etsi.org/01903/v1.4.1#" xmlns:etsival="http://uri.etsi.org/119442/v1.1.1#" xmlns:ts102231="http://uri.etsi.org/102231/v2#" xmlns:etsivr="http://uri.etsi.org/1191022/v1.1.1#" xmlns:policy="http://www.arhs-group.com/spikeseed" xmlns:vals="http://futuretrust.eu/vals/v1.0.0#" RequestID="6554ab07-e2f8-47fc-b1ef-6cb2d2f59295">
+    <dss:Result>
+        <dss:ResultMajor>urn:oasis:names:tc:dss:1.0:resultmajor:ResponderError</dss:ResultMajor>
+        <dss:ResultMinor>urn:oasis:names:tc:dss:1.0:resultminor:GeneralError</dss:ResultMinor>
+        <dss:ResultMessage xml:lang="en">Signature format is not recognized</dss:ResultMessage>
+    </dss:Result>
+</etsival:VerifyResponse>

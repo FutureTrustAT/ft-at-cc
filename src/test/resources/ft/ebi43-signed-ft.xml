@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml-stylesheet type="text/xsl" href="../Invoice.xslt"?>
+<eb:Invoice eb:DocumentTitle="DEMO-Rechnung" eb:DocumentType="Invoice" eb:GeneratingSystem="Test file" eb:InvoiceCurrency="EUR" eb:Language="ger" xmlns:eb="http://www.ebinterface.at/schema/4p3/">
+  <dsig:Signature xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+    <dsig:SignedInfo>
+      <dsig:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments" />
+      <dsig:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <dsig:Reference URI="">
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>8lz7YeLm4yMzeNduNIjLhue0JH0=</dsig:DigestValue>
+      </dsig:Reference>
+    </dsig:SignedInfo>
+    <dsig:SignatureValue>E+94XmrxcU0xq16ZKc1YwNeuVympoApOa+QiCceK/u40EOx45SUHCmmTiXFrRDIjHXCzsx7Ctb72&#13;
+mgryEwYhpXpGtNWDNlrf54epGXENw/19diTQXo/3mhWjHIDu/M3xgJyuioUp0jIw6iZLZfSW0E58&#13;
+AvYP1bS7q6Jr1u+fl+i4e59u+GcbkomTQqCcTU8Eejt+i2dHkq3HLBOkNJ3JADHrMK+Wi0OGvtLy&#13;
+c2y1A5xPD4DJNkfbnet/wO/etkVdP6RqE5ETD42pOIjWWKnCzW2k5J/SdAEKG5Z0qq2GgLeRgG6X&#13;
+7lbM+7nc83fdQyghMhQJ9BrRfajJlFeTWJBSFQ==</dsig:SignatureValue>
+    <dsig:KeyInfo>
+      <dsig:X509Data>
+        <dsig:X509SubjectName>C=EU,O=futuretrust.eu,CN=SignedEbiTest</dsig:X509SubjectName>
+        <dsig:X509Certificate>MIIC/TCCAeWgAwIBAgIJANyI921kg04uMA0GCSqGSIb3DQEBCwUAMD4xFjAUBgNVBAMMDVNpZ25l&#13;
+ZEViaVRlc3QxFzAVBgNVBAoMDmZ1dHVyZXRydXN0LmV1MQswCQYDVQQGEwJFVTAeFw0xODA3MTky&#13;
+MDUzNTdaFw0yMTA0MTMyMDUzNTdaMD4xFjAUBgNVBAMMDVNpZ25lZEViaVRlc3QxFzAVBgNVBAoM&#13;
+DmZ1dHVyZXRydXN0LmV1MQswCQYDVQQGEwJFVTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoC&#13;
+ggEBANr7078Cl5bkEZN6UufBNB3eT1NTvXBq8nAkbyW0K1rPMYIxbvS30329H31dYcNqDXpt3pd6&#13;
+CFQ8BODBV24coQYEmdAUgYP234eYfDeUO6sHnBSC3I1ldXyVmAGurNhuN+rMGtn7Axj170Pg8cpk&#13;
+H+0w+3w0xqxnYLuTGybiLOrRcfoBOqr6ljE3npNtKo9sg90SnLLkzPz+l8THeiZWSvtj0wgbJNm/&#13;
+TTsu7Wsv4C7qpsZOvS/bygaD+jDC8C2ZGRQbGncEKroYVcSNgBXqzUsXLi12gB8ny2cNzwvQhIxJ&#13;
+pAFYNX66A7XxI+UtBf2qAoOaisW17ZVDaDeYZqzafrcCAwEAATANBgkqhkiG9w0BAQsFAAOCAQEA&#13;
+bD2MKHFfASE0hlVwcCfIEIXcrr1cDSky5B9VgfNMPMe+41JqLsCFDYrYuqxa6CqfOlgF5AEurdVC&#13;
+WGEZG+GeitpUQpeBICm4GsN7QAXA7PehPIzLrJ7isjbRrXwMcjW7WIT16uXrLkID+AW8yypBSa5q&#13;
+s/XFQBL9qmNYw6kkWC2I1BQenpCxvotX/UpmKd1B/2yDzKvYhIrWwXC2WFFmGJ+jufzy4fv9NrUv&#13;
+ir3nYwNU/3ONiwi9900fZo8RCUlWCZvdAH1m2ukYBq1NRedynUJGX6U+HpVguo6j6rV1oAabiPpq&#13;
+sekE9uY8mCt+Ld6nWLKTiOdolV7nyik6UXxtPQ==</dsig:X509Certificate>
+      </dsig:X509Data>
+      <dsig:KeyValue>
+        <dsig:RSAKeyValue>
+          <dsig:Modulus>2vvTvwKXluQRk3pS58E0Hd5PU1O9cGrycCRvJbQrWs8xgjFu9LfTfb0ffV1hw2oNem3el3oIVDwE&#13;
+4MFXbhyhBgSZ0BSBg/bfh5h8N5Q7qwecFILcjWV1fJWYAa6s2G436swa2fsDGPXvQ+DxymQf7TD7&#13;
+fDTGrGdgu5MbJuIs6tFx+gE6qvqWMTeek20qj2yD3RKcsuTM/P6XxMd6JlZK+2PTCBsk2b9NOy7t&#13;
+ay/gLuqmxk69L9vKBoP6MMLwLZkZFBsadwQquhhVxI2AFerNSxcuLXaAHyfLZw3PC9CEjEmkAVg1&#13;
+froDtfEj5S0F/aoCg5qKxbXtlUNoN5hmrNp+tw==</dsig:Modulus>
+          <dsig:Exponent>AQAB</dsig:Exponent>
+        </dsig:RSAKeyValue>
+      </dsig:KeyValue>
+    </dsig:KeyInfo>
+  </dsig:Signature>
+  <eb:InvoiceNumber>2011-0001</eb:InvoiceNumber>
+  <eb:InvoiceDate>2011-09-12</eb:InvoiceDate>
+  <eb:Delivery>
+    <eb:Date>2011-09-12</eb:Date>
+  </eb:Delivery>
+  <eb:Biller>
+    <eb:VATIdentificationNumber>ATU62698637</eb:VATIdentificationNumber>
+    <eb:Address>
+      <eb:Name>Bogad &amp; Partner Consulting OG</eb:Name>
+      <eb:Street>Steinbachstraße 17</eb:Street>
+      <eb:Town>Mauerbach</eb:Town>
+      <eb:ZIP>3001</eb:ZIP>
+      <eb:Country>AT</eb:Country>
+      <eb:Phone>+43 (699) 17925908</eb:Phone>
+      <eb:Email>josef@bogad.at</eb:Email>
+      <eb:Contact>Josef Bogad</eb:Contact>
+    </eb:Address>
+  </eb:Biller>
+  <eb:InvoiceRecipient>
+    <eb:VATIdentificationNumber>00000000</eb:VATIdentificationNumber>
+    <eb:Address>
+      <eb:Salutation>Firma</eb:Salutation>
+      <eb:Name>Max Mustermann</eb:Name>
+      <eb:Street>Kundenstrasse 1</eb:Street>
+      <eb:Town>Kaufort</eb:Town>
+      <eb:ZIP>1234</eb:ZIP>
+      <eb:Country>AT</eb:Country>
+      <eb:Contact>Max Mustermann</eb:Contact>
+    </eb:Address>
+    <eb:BillersInvoiceRecipientID>123123</eb:BillersInvoiceRecipientID>
+  </eb:InvoiceRecipient>
+  <eb:Details>
+    <eb:HeaderDescription>Wir erlauben uns wie folgt zu verrechnen.</eb:HeaderDescription>
+    <eb:ItemList>
+      <eb:ListLineItem>
+        <eb:PositionNumber>1</eb:PositionNumber>
+        <eb:Description>ebInterface Beratung</eb:Description>
+        <eb:ArticleNumber>4711</eb:ArticleNumber>
+        <eb:Quantity eb:Unit="Tag">0.50</eb:Quantity>
+        <eb:UnitPrice>400.00</eb:UnitPrice>
+        <eb:VATRate eb:TaxCode="AT060">20.00</eb:VATRate>
+        <eb:DiscountFlag>false</eb:DiscountFlag>
+        <eb:ReductionAndSurchargeListLineItemDetails>
+          <eb:ReductionListLineItem>
+            <eb:BaseAmount>200.00</eb:BaseAmount>
+            <eb:Percentage>0.00</eb:Percentage>
+          </eb:ReductionListLineItem>
+        </eb:ReductionAndSurchargeListLineItemDetails>
+        <eb:LineItemAmount>200.00</eb:LineItemAmount>
+      </eb:ListLineItem>
+    </eb:ItemList>
+    <eb:FooterDescription>Wir danken für Ihren Auftrag.</eb:FooterDescription>
+  </eb:Details>
+  <eb:Tax>
+    <eb:VAT>
+      <eb:VATItem>
+        <eb:TaxedAmount>200.00</eb:TaxedAmount>
+        <eb:VATRate eb:TaxCode="AT060">20.00</eb:VATRate>
+        <eb:Amount>40.00</eb:Amount>
+      </eb:VATItem>
+    </eb:VAT>
+  </eb:Tax>
+  <eb:TotalGrossAmount>240.00</eb:TotalGrossAmount>
+  <eb:PayableAmount>240.00</eb:PayableAmount>
+  <eb:PaymentMethod>
+    <eb:UniversalBankTransaction>
+      <eb:BeneficiaryAccount>
+        <eb:BankName>Volksbank Wien</eb:BankName>
+        <eb:BankCode eb:BankCodeType="AT">43000</eb:BankCode>
+        <eb:BankAccountNr>40813033004 </eb:BankAccountNr>
+        <eb:BankAccountOwner>Bogad &amp; Partner Consulting OG</eb:BankAccountOwner>
+      </eb:BeneficiaryAccount>
+    </eb:UniversalBankTransaction>
+  </eb:PaymentMethod>
+  <eb:PaymentConditions>
+    <eb:DueDate>2011-09-12</eb:DueDate>
+  </eb:PaymentConditions>
+  <eb:PresentationDetails>
+    <eb:URL>www.austriapro.at</eb:URL>
+    <eb:SuppressZero>true</eb:SuppressZero>
+  </eb:PresentationDetails>
+</eb:Invoice>

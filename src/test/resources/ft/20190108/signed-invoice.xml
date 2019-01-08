@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Invoice xmlns="http://www.ebinterface.at/schema/4p3/" DocumentTitle="DEMO-Rechnung" DocumentType="Invoice" GeneratingSystem="Test file" InvoiceCurrency="EUR" Language="ger">
+  <ns0:Signature xmlns:ns0="http://www.w3.org/2000/09/xmldsig#">
+    <ns0:SignedInfo>
+      <ns0:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+      <ns0:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" />
+      <ns0:Reference URI="">
+        <ns0:Transforms>
+          <ns0:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </ns0:Transforms>
+        <ns0:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512" />
+        <ns0:DigestValue>KVnrNNxCaAxF5zRxdCglMjp8t2+oCf965oU91/iqfXM9F854+8iL5JzwzXvYyewrEW+gjgcdvRIF&#xD;
+r0yhKJK/2g==</ns0:DigestValue>
+      </ns0:Reference>
+    </ns0:SignedInfo>
+    <ns0:SignatureValue>JPI19saj57pbAFG9LJ6BuIf/qS1X0PvRS70wauPeTScYDlT/rkMpngfzdDXaIfLnm1GAekRvRgd4&#xD;
+PI0qHGAOl1cQ+ApT684aQrkaHorpuiUewoEO9o+Aq9yjitEhHBZlYqwjsJ1WScMPDXe0ATDFTJzt&#xD;
+7i9R+dTKJgmkXKMz//HZuUpsIwL3U8NIIPgIkr3SlgU1dLQJWEqfrn8XRTxq3EQZzDdhi4uf9Y+N&#xD;
+MqWcbBzF5hGbL7L8B1yEEr35n2XjEMiX9BEDdfRsitNluejIe26Nrbh21oEpvTIiSxRyg5lmSeF2&#xD;
+E9VLWgyQtt9cZRiltbkB4hn+UWWKbzy333hYPQ==</ns0:SignatureValue>
+    <ns0:KeyInfo>
+      <ns0:X509Data>
+        <ns0:X509SubjectName>CN=FutureTrust-CZ-eInvoice,O=Bundesrechenzentrum GmbH,C=AT</ns0:X509SubjectName>
+        <ns0:X509Certificate>MIIFPzCCAyegAwIBAgIIFmaFlm+FvNEwDQYJKoZIhvcNAQELBQAwbTELMAkGA1UEBhMCQVQxITAf&#xD;
+BgNVBAoTGEJ1bmRlc3JlY2hlbnplbnRydW0gR21iSDEPMA0GA1UECxMGQlJaIENBMSowKAYDVQQD&#xD;
+EyFNdXN0ZXItQlJaLVNlcnZpY2UtTGV2ZWwyLUNBLTItMDIwHhcNMTgxMTIwMTA0MjAxWhcNMjMx&#xD;
+MTIxMTA0MjAxWjBSMQswCQYDVQQGEwJBVDEhMB8GA1UEChMYQnVuZGVzcmVjaGVuemVudHJ1bSBH&#xD;
+bWJIMSAwHgYDVQQDExdGdXR1cmVUcnVzdC1DWi1lSW52b2ljZTCCASIwDQYJKoZIhvcNAQEBBQAD&#xD;
+ggEPADCCAQoCggEBAJfBX8cbRNGFvbICs1xDGoZY96DVba4/i8bu635VqrXnr9SPQjFCAQ7vLnue&#xD;
+8jRmm/lj+Ia7ZwZuAnE6VMeSWel+ZB//S+5DMb2I51YilA3FIkBCZy0+xpHoaUZ47i7cWx2ohVhw&#xD;
+gtOm7J4NAPt9V+hxtdt4XCHa/yH3jxYD2gYqW9cOGbiM2dl0KGuHBHl2Zcu+m83CBBuR890MCaHN&#xD;
+6pumpHhdTkZrm5fjedV8vOEZjgxiupoFkXqXp162EH7/vyHF1X7Sr704w6GCHy5YOi+EBBJwQgKU&#xD;
+6hnWrX1bBOjc3RbFUKQgSfBfVD7IX/E2fj8ilK0YEB6GjRmD+LSIPz8CAwEAAaOB/TCB+jA8Bggr&#xD;
+BgEFBQcBAQQwMC4wLAYIKwYBBQUHMAGGIGh0dHA6Ly9tYnJ6Y2FvY3NwLmJyei5ndi5hdC9vY3Nw&#xD;
+MB0GA1UdDgQWBBQPpYVtkde4qFD9vgc4Zls4bXJYYzAfBgNVHSMEGDAWgBSaLElNHXcoZEbqyxyE&#xD;
+r+7V/1qkUTAYBgNVHSAEETAPMA0GCysGAQQBsziPXQEBMDgGA1UdHwQxMC8wLaAroCmGJ2h0dHA6&#xD;
+Ly90YnJ6Y2FjcmwuYnJ6Lmd2LmF0L2NybC8yc2wyLjAy/zAOBgNVHQ8BAf8EBAMCB4AwFgYDVR0l&#xD;
+AQH/BAwwCgYIKwYBBQUHAwIwDQYJKoZIhvcNAQELBQADggIBAB8KEa7gibAowgHoWc1p0RpKRh9N&#xD;
+E7MLxnNjPoXOWETbrlPg8RWbXYGHUSE9T53LEu4+K9XUFqe7KT6v/UHB58PFRez7ZMDSQko79bqg&#xD;
+cmjLuy/wodnhA270xXB4AbTLmjBttsy5ERaBBJ83z6XB7m5DpUQwzRxwYTn5hpjs6hP3ZFMP8ZGS&#xD;
+kjg2tZcT0PKzA6MTFx7JNDfDYqdKQrlog2g1gR7t53Bbb9JALGLfKsjOJyCNKSr0zrc2L7LbqPIT&#xD;
++j7CjRmVTRYL8WkGYaZJNPhjCJkDwwjTEYlWNgOcofGTVyMg4E/tyjhqTrcdyvohhZcUqaYDZ5rX&#xD;
+ggPXW2XhWq2nas2QN+Fp7i2ZFCzAl3onnsjr8CkSnNA8hmKaA52K0tGllVSN5pldDJpiJYoMYj6k&#xD;
+8dS0D3ves9w2355EmZnqxr7953ojKR7/LFIVXnPE+EY6jM6rTjPtwfoiFatGrubilzCnSN5i8Lfk&#xD;
+N7LXeb0srkSbptn6FJudH9Nu2sETmcZAOdOjR2/eyGokBsjFbokPBSmAvzCMgqMAIBmGpv/4a14v&#xD;
+pJRu7vngaAkDbCPCMKVpgF/mdRcxMZzEsVDPDT9k++hN2H+3qJmKMVuo/CU25u2wsieqxhwYwjkU&#xD;
+R9Z4m7ukqiwHuG+GQxydhwpGZW/uo/5EQb8JORUf85DNRjci</ns0:X509Certificate>
+      </ns0:X509Data>
+      <ns0:KeyValue>
+        <ns0:RSAKeyValue>
+          <ns0:Modulus>l8FfxxtE0YW9sgKzXEMahlj3oNVtrj+Lxu7rflWqteev1I9CMUIBDu8ue57yNGab+WP4hrtnBm4C&#xD;
+cTpUx5JZ6X5kH/9L7kMxvYjnViKUDcUiQEJnLT7GkehpRnjuLtxbHaiFWHCC06bsng0A+31X6HG1&#xD;
+23hcIdr/IfePFgPaBipb1w4ZuIzZ2XQoa4cEeXZly76bzcIEG5Hz3QwJoc3qm6akeF1ORmubl+N5&#xD;
+1Xy84RmODGK6mgWRepenXrYQfv+/IcXVftKvvTjDoYIfLlg6L4QEEnBCApTqGdatfVsE6NzdFsVQ&#xD;
+pCBJ8F9UPshf8TZ+PyKUrRgQHoaNGYP4tIg/Pw==</ns0:Modulus>
+          <ns0:Exponent>AQAB</ns0:Exponent>
+        </ns0:RSAKeyValue>
+      </ns0:KeyValue>
+    </ns0:KeyInfo>
+    <ns0:Object />
+  </ns0:Signature>
+  <InvoiceNumber>2018-0001</InvoiceNumber>
+  <InvoiceDate>2018-09-12</InvoiceDate>
+  <Delivery>
+    <Date>2018-09-12</Date>
+  </Delivery>
+  <Biller>
+    <VATIdentificationNumber>ATU00000000</VATIdentificationNumber>
+    <Address>
+      <Name>Dummy OG</Name>
+      <Street>Hauptstraße 17</Street>
+      <Town>Mauerbach</Town>
+      <ZIP>1234</ZIP>
+      <Country>AT</Country>
+      <Email>philip.helger@brz.gv.at</Email>
+      <Contact>P. Helger</Contact>
+    </Address>
+  </Biller>
+  <InvoiceRecipient>
+    <VATIdentificationNumber>ATU00000000</VATIdentificationNumber>
+    <OrderReference>
+      <OrderID>Z01</OrderID>
+      <ReferenceDate>2009-09-01</ReferenceDate>
+      <Description>Eingegangen per Fax.</Description>
+    </OrderReference>
+    <Address>
+      <Salutation>Firma</Salutation>
+      <Name>Max Mustermann</Name>
+      <Street>Kundenstrasse 1</Street>
+      <Town>Kaufort</Town>
+      <ZIP>1234</ZIP>
+      <Country>AT</Country>
+      <Contact>Max Mustermann</Contact>
+    </Address>
+    <BillersInvoiceRecipientID>123123</BillersInvoiceRecipientID>
+  </InvoiceRecipient>
+  <Details>
+    <HeaderDescription>Wir erlauben uns wie folgt zu verrechnen.</HeaderDescription>
+    <ItemList>
+      <ListLineItem>
+        <PositionNumber>1</PositionNumber>
+        <Description>ebInterface Beratung</Description>
+        <ArticleNumber>4711</ArticleNumber>
+        <Quantity Unit="Tag">0.50</Quantity>
+        <UnitPrice>400.00</UnitPrice>
+        <VATRate TaxCode="AT060">20.00</VATRate>
+        <DiscountFlag>false</DiscountFlag>
+        <ReductionAndSurchargeListLineItemDetails>
+          <ReductionListLineItem>
+            <BaseAmount>200.00</BaseAmount>
+            <Percentage>0.00</Percentage>
+          </ReductionListLineItem>
+        </ReductionAndSurchargeListLineItemDetails>
+        <LineItemAmount>200.00</LineItemAmount>
+      </ListLineItem>
+    </ItemList>
+    <FooterDescription>Wir danken für Ihren Auftrag.</FooterDescription>
+  </Details>
+  <Tax>
+    <VAT>
+      <VATItem>
+        <TaxedAmount>200.00</TaxedAmount>
+        <VATRate TaxCode="AT060">20.00</VATRate>
+        <Amount>40.00</Amount>
+      </VATItem>
+    </VAT>
+  </Tax>
+  <TotalGrossAmount>240.00</TotalGrossAmount>
+  <PayableAmount>240.00</PayableAmount>
+  <PaymentMethod>
+    <UniversalBankTransaction>
+      <BeneficiaryAccount>
+        <BankName>Volksbank Wien</BankName>
+        <IBAN>DE27100777770209299700</IBAN>
+        <BankAccountOwner>Hugo Consulting OG</BankAccountOwner>
+      </BeneficiaryAccount>
+    </UniversalBankTransaction>
+  </PaymentMethod>
+  <PaymentConditions>
+    <DueDate>2018-12-31</DueDate>
+  </PaymentConditions>
+</Invoice>
