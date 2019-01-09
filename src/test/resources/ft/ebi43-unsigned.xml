@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <eb:Invoice eb:DocumentTitle="DEMO-Rechnung" eb:DocumentType="Invoice" eb:GeneratingSystem="Test file" eb:InvoiceCurrency="EUR" eb:Language="ger" xmlns:eb="http://www.ebinterface.at/schema/4p3/">
-  <eb:InvoiceNumber>2018-0001</eb:InvoiceNumber>
-  <eb:InvoiceDate>2018-09-12</eb:InvoiceDate>
+  <eb:InvoiceNumber>2019-0001</eb:InvoiceNumber>
+  <eb:InvoiceDate>2019-06-12</eb:InvoiceDate>
   <eb:Delivery>
-    <eb:Date>2018-09-12</eb:Date>
+    <eb:Date>2019-09-12</eb:Date>
   </eb:Delivery>
   <eb:Biller>
     <eb:VATIdentificationNumber>ATU00000000</eb:VATIdentificationNumber>
@@ -78,6 +78,6 @@
     </eb:UniversalBankTransaction>
   </eb:PaymentMethod>
   <eb:PaymentConditions>
-    <eb:DueDate>2018-12-31</eb:DueDate>
+    <eb:DueDate>2019-12-31</eb:DueDate>
   </eb:PaymentConditions>
 </eb:Invoice>

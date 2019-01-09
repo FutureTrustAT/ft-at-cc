@@ -39,10 +39,9 @@ import com.helger.xml.microdom.serialize.MicroWriter;
 import com.helger.xml.namespace.MapBasedNamespaceContext;
 import com.helger.xml.serialize.read.DOMReader;
 import com.helger.xml.serialize.write.XMLWriterSettings;
+import com.helger.xmldsig.XMLDSigSetup;
 import com.helger.xmldsig.XMLDSigValidationResult;
 import com.helger.xmldsig.XMLDSigValidator;
-
-import at.gv.brz.futuretrust.cc.XMLDSigHandler;
 
 public final class FTValidateFuncTest
 {
@@ -79,15 +78,43 @@ public final class FTValidateFuncTest
   @BeforeClass
   public static void beforeClass ()
   {
+    XMLDSigSetup.getXMLSignatureFactory ();
     HttpDebugger.setEnabled (false);
   }
 
+  // Working fine
+  @Test
+  @Ignore
+  public void testSendPrebuildVerifyRequest () throws Exception
+  {
+    final File f = new File ("src/test/resources/ft/eRechnung_01_verify-request_working.xml");
+
+    final HttpClientFactory aHCFactory = new HttpClientFactory ();
+    try (HttpClientManager aMgr = new HttpClientManager (aHCFactory))
+    {
+      final HttpPost aPost = new HttpPost (VALS_URL);
+      aPost.setEntity (new FileEntity (f, ContentType.APPLICATION_XML));
+
+      final ResponseHandlerMicroDom aRH = new ResponseHandlerMicroDom (false);
+      final IMicroDocument aDoc = aMgr.execute (aPost, aRH);
+
+      if (true)
+        LOGGER.info ("Received:\n" + MicroWriter.getNodeAsString (aDoc, XWS));
+
+      final IMicroElement aResult = aDoc.getDocumentElement ().getFirstChildElement (XMLDSigHandler.NS_DSS2, "Result");
+      final IMicroElement aResultMajor = aResult.getFirstChildElement (XMLDSigHandler.NS_DSS2, "ResultMajor");
+      LOGGER.info ("Result: " + aResultMajor.getTextContent ());
+    }
+  }
+
+  // Not working, but signature contained in payload
   @Test
   @Ignore
   public void testCreateNewRequestWithPredefinedSignedXML () throws Exception
   {
     final Document aEbiSignedDoc = DOMReader.readXMLDOM (new File ("src/test/resources/ft/ebi43-signed-ft.xml"));
     assertNotNull (aEbiSignedDoc);
+    assertNotNull (aEbiSignedDoc.getDocumentElement ());
 
     final Element eSignatureElement = XMLHelper.getFirstChildElement (aEbiSignedDoc.getDocumentElement ());
     assertNotNull (eSignatureElement);
@@ -98,7 +125,8 @@ public final class FTValidateFuncTest
                                                                                  eSignatureElement);
 
     // Dump request
-    SimpleFileIO.writeFile (new File ("request.xml"), MicroWriter.getNodeAsBytes (aVerifyRequestDoc, XWS));
+    if (false)
+      SimpleFileIO.writeFile (new File ("request.xml"), MicroWriter.getNodeAsBytes (aVerifyRequestDoc, XWS));
     if (false)
       LOGGER.info ("Sending:\n" + MicroWriter.getNodeAsString (aVerifyRequestDoc, XWS));
 
@@ -114,13 +142,15 @@ public final class FTValidateFuncTest
 
       // Dump response
       LOGGER.info ("Received:\n" + MicroWriter.getNodeAsString (aDoc, XWS));
-      SimpleFileIO.writeFile (new File ("response.xml"), MicroWriter.getNodeAsBytes (aDoc, XWS));
+      if (false)
+        SimpleFileIO.writeFile (new File ("response.xml"), MicroWriter.getNodeAsBytes (aDoc, XWS));
     }
   }
 
   @Test
   public void testCreateNewRequestFromUnsignedXML () throws Exception
   {
+    // Load keystore and key
     final String sKSPath = "futureTrust.cz.eRechnung.jks";
     final String sPW = "changeit";
     final KeyStore aKS = KeyStoreHelper.loadKeyStoreDirect (EKeyStoreType.JKS, sKSPath, sPW.toCharArray ());
@@ -134,14 +164,17 @@ public final class FTValidateFuncTest
     final X509Certificate aCertificate = (X509Certificate) aLK.getKeyEntry ().getCertificate ();
     final PrivateKey aPrivateKey = aLK.getKeyEntry ().getPrivateKey ();
 
+    // Read unsigned invoice
     final File fUnsigned = new File ("src/test/resources/ft/ebi43-unsigned.xml");
     final Document aEbiDoc = DOMReader.readXMLDOM (fUnsigned);
     assertNotNull (aEbiDoc);
 
     // Sign
     final Element aSignatureElement = XMLDSigHandler.sign (aEbiDoc, aPrivateKey, aCertificate);
+    // aSignatureElement = DOMReader.readXMLDOM ("<root/>").getDocumentElement ();
 
     // Check if it worked
+
     final XMLDSigValidationResult aResult = XMLDSigValidator.validateSignature (aEbiDoc,
                                                                                 aSignatureElement,
                                                                                 KeySelector.singletonKeySelector (aCertificate.getPublicKey ()));
@@ -169,30 +202,6 @@ public final class FTValidateFuncTest
       // Dump response
       LOGGER.info ("Received:\n" + MicroWriter.getNodeAsString (aDoc, XWS));
       SimpleFileIO.writeFile (new File ("response.xml"), MicroWriter.getNodeAsBytes (aDoc, XWS));
-    }
-  }
-
-  @Test
-  @Ignore
-  public void testSendPrebuild () throws Exception
-  {
-    final File f = new File ("src/test/resources/ft/eRechnung_01_verify-request_working.xml");
-
-    final HttpClientFactory aHCFactory = new HttpClientFactory ();
-    try (HttpClientManager aMgr = new HttpClientManager (aHCFactory))
-    {
-      final HttpPost aPost = new HttpPost (VALS_URL);
-      aPost.setEntity (new FileEntity (f, ContentType.APPLICATION_XML));
-
-      final ResponseHandlerMicroDom aRH = new ResponseHandlerMicroDom (false);
-      final IMicroDocument aDoc = aMgr.execute (aPost, aRH);
-
-      if (false)
-        LOGGER.info ("Received:\n" + MicroWriter.getNodeAsString (aDoc, XWS));
-
-      final IMicroElement aResult = aDoc.getDocumentElement ().getFirstChildElement (XMLDSigHandler.NS_DSS2, "Result");
-      final IMicroElement aResultMajor = aResult.getFirstChildElement (XMLDSigHandler.NS_DSS2, "ResultMajor");
-      LOGGER.info ("Result: " + aResultMajor.getTextContent ());
     }
   }
 }

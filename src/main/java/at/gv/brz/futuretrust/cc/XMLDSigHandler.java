@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.base64.Base64;
 import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
@@ -93,11 +94,11 @@ public final class XMLDSigHandler
 
   private static byte [] _getAsBytes (@Nonnull final Element e)
   {
-    if (false)
-      return _getAsBytesTransformer (e);
-
     if (true)
       return _getAsBytesCanonicalized (e);
+
+    if (false)
+      return _getAsBytesTransformer (e);
 
     // Still not working
     final MapBasedNamespaceContext aNsCtx = new MapBasedNamespaceContext ();
@@ -154,8 +155,9 @@ public final class XMLDSigHandler
                                                                     null,
                                                                     null);
 
+    // Create empty document that should contain the signature
     final Document aSignatureDoc = XMLFactory.newDocument ();
-    final Element eSignatureRoot = (Element) aSignatureDoc.appendChild (aSignatureDoc.createElement ("root"));
+    final Element eSignatureRoot = (Element) aSignatureDoc.appendChild (aSignatureDoc.createElement ("dummy-nobody-cares"));
 
     final DOMSignContext aDOMSignContext = new DOMSignContext (aPrivateKey, eSignatureRoot);
     aDOMSignContext.setDefaultNamespacePrefix (XMLDSigCreator.DEFAULT_NS_PREFIX);
@@ -163,6 +165,7 @@ public final class XMLDSigHandler
     // Marshal, generate, and sign the enveloped signature.
     aXMLSignature.sign (aDOMSignContext);
 
+    // Extract signatue
     final Element aSignatureElement = XMLHelper.getFirstChildElement (eSignatureRoot);
 
     if (true)
@@ -178,6 +181,9 @@ public final class XMLDSigHandler
   public static IMicroDocument createVerifyRequest (@Nonnull final Element aInvoice,
                                                     @Nonnull final Element aSignature) throws IOException
   {
+    ValueEnforcer.notNull (aInvoice, "Invoice");
+    ValueEnforcer.notNull (aSignature, "Signature");
+
     final IMicroDocument aVerifyRequestDoc = new MicroDocument ();
     final IMicroElement eRoot = aVerifyRequestDoc.appendElement (NS_ETSIVAL, "VerifyRequest");
     eRoot.setAttribute ("RequestID", UUID.randomUUID ().toString ());
@@ -188,7 +194,7 @@ public final class XMLDSigHandler
       eDoc.setAttribute ("RefURI", "e-invoice.xml");
       final IMicroElement eBase64 = eDoc.appendElement (NS_DSS2, "Base64Data");
       final IMicroElement eValue = eBase64.appendElement (NS_DSS2, "Value");
-      eValue.appendText (Base64.encodeBytes (_getAsBytes (aInvoice), Base64.DO_BREAK_LINES));
+      eValue.appendText (Base64.encodeBytes (_getAsBytesTransformer (aInvoice), Base64.DO_BREAK_LINES));
     }
     {
       final IMicroElement eOptionalInputs = eRoot.appendElement (NS_ETSIVAL, "OptionalInputs");
@@ -213,7 +219,7 @@ public final class XMLDSigHandler
       eBase64Signature.setAttribute ("MimeType", CMimeType.APPLICATION_XML.getAsString ());
       final IMicroElement eValue = eBase64Signature.appendElement (NS_DSS2, "Value");
       // Signature only
-      eValue.appendText (Base64.encodeBytes (_getAsBytes (aSignature), Base64.DO_BREAK_LINES));
+      eValue.appendText (Base64.encodeBytes (_getAsBytesTransformer (aSignature), Base64.DO_BREAK_LINES));
     }
     return aVerifyRequestDoc;
   }
