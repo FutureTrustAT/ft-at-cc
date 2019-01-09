@@ -152,11 +152,17 @@ public final class XMLDSigHandler
       }
 
       @Override
+      protected String getDefaultReferenceURI ()
+      {
+        // "" means sign the whole document
+        return "";
+      }
+
+      @Override
       protected String getSignatureMethod () throws Exception
       {
         return org.apache.xml.security.signature.XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256;
       }
-
     };
     final XMLObject aObj = aCreator.getSignatureFactory ()
                                    .newXMLObject (new CommonsArrayList <> (new DOMStructure (aEbiDoc)),
@@ -218,6 +224,7 @@ public final class XMLDSigHandler
       if (false)
         sReportDetailLevel = "urn:oasis:names:tc:dss:1.0:profiles:verificationreport:reportdetail:allDetails";
       eRVR.appendElement (NS_VR, "ReportDetailLevel").appendText (sReportDetailLevel);
+      // Manifest must be disabled - else ValS crashes
       eOptionalInputs.appendElement (NS_ETSIVAL, "VerifyManifests").appendText ("false");
       eOptionalInputs.appendElement (NS_ETSIVAL, "SignVerificationReport").appendText ("true");
     }

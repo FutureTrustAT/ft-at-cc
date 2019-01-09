@@ -40,6 +40,7 @@ import com.helger.xml.serialize.write.XMLWriterSettings;
 import com.helger.xmldsig.XMLDSigSetup;
 import com.helger.xmldsig.XMLDSigValidationResult;
 import com.helger.xmldsig.XMLDSigValidator;
+import com.helger.xmldsig.keyselect.ContainedX509KeySelector;
 
 public final class FTValidateFuncTest
 {
@@ -140,6 +141,14 @@ public final class FTValidateFuncTest
                                                                                   KeySelector.singletonKeySelector (aCertificate.getPublicKey ()));
       assertTrue (aResult.isValid ());
     }
+    if (true)
+    {
+      final XMLDSigValidationResult aResult = XMLDSigValidator.validateSignature (aEbiDoc,
+                                                                                  (Element) aSignatureDoc.getDocumentElement ()
+                                                                                                         .getFirstChild (),
+                                                                                  new ContainedX509KeySelector ());
+      assertTrue (aResult.isValid ());
+    }
 
     // Create request
     final IMicroDocument aVerifyRequestDoc = XMLDSigHandler.createVerifyRequest (aEbiDoc.getDocumentElement (),
@@ -148,7 +157,7 @@ public final class FTValidateFuncTest
     // Dump request
     if (false)
       SimpleFileIO.writeFile (new File ("request.xml"), MicroWriter.getNodeAsBytes (aVerifyRequestDoc, XWS));
-    if (true)
+    if (false)
       LOGGER.info ("Sending:\n" + MicroWriter.getNodeAsString (aVerifyRequestDoc, XWS));
 
     final HttpClientFactory aHCFactory = new HttpClientFactory ();
