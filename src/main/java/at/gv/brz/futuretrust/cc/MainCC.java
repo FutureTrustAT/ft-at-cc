@@ -16,12 +16,20 @@
  */
 package at.gv.brz.futuretrust.cc;
 
+import java.io.File;
 import java.security.KeyStore;
+import java.security.PrivateKey;
+import java.security.cert.X509Certificate;
 import java.util.Locale;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.commons.io.file.FileOperations;
+import com.helger.commons.string.StringHelper;
 import com.helger.security.keystore.EKeyStoreType;
 import com.helger.security.keystore.KeyStoreHelper;
 import com.helger.security.keystore.LoadedKey;
@@ -37,39 +45,108 @@ import com.helger.settings.exchange.configfile.ConfigFileBuilder;
 public final class MainCC
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (MainCC.class);
+  private static final String APP_NAME = "ft-at-cc v0.1";
   private static final Locale LOCALE = Locale.US;
+
+  private static void _fatalError (@Nonnull final String sMsg)
+  {
+    throw new IllegalStateException (sMsg);
+  }
+
+  @Nonnull
+  private static File _checkExistingDir (@Nonnull final ConfigFile aCF, @Nullable final String sKey)
+  {
+    final String sDirName = aCF.getAsString (sKey);
+    if (StringHelper.hasNoText (sDirName))
+      _fatalError ("The configuration file entry '" + sKey + "' is missing or empty");
+
+    final File ret = new File (sDirName).getAbsoluteFile ();
+    if (!ret.isDirectory ())
+    {
+      // Create if necessary
+      FileOperations.createDirRecursiveIfNotExisting (ret);
+
+      // Check again
+      if (!ret.isDirectory ())
+      {
+        _fatalError ("The configuration file entry '" +
+                     sKey +
+                     "' points to a non-directory: " +
+                     ret.getAbsolutePath ());
+      }
+    }
+    return ret;
+  }
+
+  private static void _signAndSendInvoices (@Nonnull final KeyStore aKeyStore,
+                                            @Nonnull final PrivateKey aPrivateKey,
+                                            @Nonnull final X509Certificate aCertificate,
+                                            @Nonnull final File aDirOutgoing,
+                                            @Nonnull final File aDirResponseSuccess,
+                                            @Nonnull final File aDirResponseError)
+  {
+    // XMLDSigHandler.createVerifyRequest (aInvoice, aSignature)
+  }
 
   public static void main (final String [] args)
   {
-    LOGGER.info ("Started application");
+    LOGGER.info ("Starting " + APP_NAME);
 
     // Load configuration file
-    final ConfigFile aCF = new ConfigFileBuilder ().addPathFromSystemProperty ("ft-at-cc-configuration-file")
+    final ConfigFile aCF = new ConfigFileBuilder ().addPathFromEnvVar ("FT_AT_CONFIG")
+                                                   .addPathFromSystemProperty ("ft-at-cc-configuration-file")
+                                                   .addPath ("private-config.properties")
                                                    .addPath ("config.properties")
                                                    .build ();
     if (!aCF.isRead ())
-      throw new IllegalStateException ("Failed to resolve configuration file");
-    LOGGER.info ("Loaded configuration file '" + aCF.getReadResource ().getPath () + '"');
+      _fatalError ("Failed to resolve configuration file");
+    LOGGER.info ("Loaded configuration file '" + aCF.getReadResource ().getPath () + "'");
 
     // Load keystore
     final EKeyStoreType eKSType = EKeyStoreType.getFromIDCaseInsensitiveOrDefault (aCF.getAsString ("keystore.type"),
                                                                                    EKeyStoreType.JKS);
+    final String sKeystorePath = aCF.getAsString ("keystore.path");
     final LoadedKeyStore aLKS = KeyStoreHelper.loadKeyStore (eKSType,
-                                                             aCF.getAsString ("keystore.path"),
+                                                             sKeystorePath,
                                                              aCF.getAsString ("keystore.password"));
     if (aLKS.isFailure ())
-      throw new IllegalStateException ("Failed to load keystore: " + aLKS.getErrorText (LOCALE));
-    LOGGER.info ("Successfully loaded keystore");
+      _fatalError (aLKS.getErrorText (LOCALE));
+    LOGGER.info ("Successfully loaded keystore file '" + sKeystorePath + "'");
 
     // Load key from keystore
+    final String sKeystoreKeyAlias = aCF.getAsString ("keystore.key.alias");
     final LoadedKey <KeyStore.PrivateKeyEntry> aLPK = KeyStoreHelper.loadPrivateKey (aLKS.getKeyStore (),
-                                                                                     aCF.getAsString ("keystore.path"),
-                                                                                     aCF.getAsString ("keystore.key.alias"),
+                                                                                     sKeystorePath,
+                                                                                     sKeystoreKeyAlias,
                                                                                      aCF.getAsCharArray ("keystore.key.password"));
     if (aLPK.isFailure ())
-      throw new IllegalStateException ("Failed to load key from keystore: " + aLPK.getErrorText (LOCALE));
-    LOGGER.info ("Successfully loaded key from keystore");
+      _fatalError ("Failed to load key '" +
+                   sKeystoreKeyAlias +
+                   "' from keystore '" +
+                   sKeystorePath +
+                   "': " +
+                   aLPK.getErrorText (LOCALE));
+    LOGGER.info ("Successfully loaded key '" + sKeystoreKeyAlias + "' from keystore '" + sKeystorePath + "'");
 
-    LOGGER.info ("Finished application");
+    // Check directories
+    final File aDirOutgoing = _checkExistingDir (aCF, "directory.outgoing");
+    LOGGER.info ("Outgoing directory is '" + aDirOutgoing.getAbsolutePath () + "'");
+
+    final File aDirResponseSuccess = _checkExistingDir (aCF, "directory.response.success");
+    LOGGER.info ("Response success directory is '" + aDirResponseSuccess.getAbsolutePath () + "'");
+
+    final File aDirResponseError = _checkExistingDir (aCF, "directory.response.error");
+    LOGGER.info ("Response error directory is '" + aDirResponseError.getAbsolutePath () + "'");
+
+    // Go go go
+    _signAndSendInvoices (aLKS.getKeyStore (),
+                          aLPK.getKeyEntry ().getPrivateKey (),
+                          (X509Certificate) aLPK.getKeyEntry ().getCertificate (),
+                          aDirOutgoing,
+                          aDirResponseSuccess,
+                          aDirResponseError);
+
+    // Done
+    LOGGER.info ("Finished " + APP_NAME);
   }
 }
