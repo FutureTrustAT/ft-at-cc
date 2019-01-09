@@ -9,6 +9,7 @@ import java.security.cert.X509Certificate;
 
 import javax.xml.crypto.KeySelector;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -20,6 +21,7 @@ import com.helger.xml.serialize.read.DOMReader;
 import com.helger.xmldsig.XMLDSigValidationResult;
 import com.helger.xmldsig.XMLDSigValidator;
 
+@Ignore
 public class DummyTest
 {
   @Test

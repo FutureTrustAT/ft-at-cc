@@ -73,7 +73,8 @@ public final class FTValidateFuncTest
   }
   private static final XMLWriterSettings XWS = new XMLWriterSettings ().setNamespaceContext (NSCTX)
                                                                        .setPutNamespaceContextPrefixesInRoot (true);
-  private static final String VALS_URL = "https://futuretrust.brz.gv.at/vals-web/api/validation";
+  private static final String VALS_URL = true ? "http://localhost:8001/api/validation"
+                                              : "https://futuretrust.brz.gv.at/vals-web/api/validation";
 
   @BeforeClass
   public static void beforeClass ()
@@ -171,10 +172,8 @@ public final class FTValidateFuncTest
 
     // Sign
     final Element aSignatureElement = XMLDSigHandler.sign (aEbiDoc, aPrivateKey, aCertificate);
-    // aSignatureElement = DOMReader.readXMLDOM ("<root/>").getDocumentElement ();
 
-    // Check if it worked
-
+    // Check if signing worked
     final XMLDSigValidationResult aResult = XMLDSigValidator.validateSignature (aEbiDoc,
                                                                                 aSignatureElement,
                                                                                 KeySelector.singletonKeySelector (aCertificate.getPublicKey ()));

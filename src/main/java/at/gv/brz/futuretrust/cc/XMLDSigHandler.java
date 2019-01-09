@@ -55,7 +55,7 @@ public final class XMLDSigHandler
   {}
 
   @Nonnull
-  private static byte [] _getAsBytesTransformer (@Nonnull final Element e)
+  private static byte [] _getAsBytesTransformer2 (@Nonnull final Element e)
   {
     try
     {
@@ -92,14 +92,8 @@ public final class XMLDSigHandler
     }
   }
 
-  private static byte [] _getAsBytes (@Nonnull final Element e)
+  private static byte [] _getAsBytesMico (@Nonnull final Element e)
   {
-    if (true)
-      return _getAsBytesCanonicalized (e);
-
-    if (false)
-      return _getAsBytesTransformer (e);
-
     // Still not working
     final MapBasedNamespaceContext aNsCtx = new MapBasedNamespaceContext ();
     aNsCtx.addMapping ("eb", "http://www.ebinterface.at/schema/4p3/");
@@ -165,10 +159,10 @@ public final class XMLDSigHandler
     // Marshal, generate, and sign the enveloped signature.
     aXMLSignature.sign (aDOMSignContext);
 
-    // Extract signatue
+    // Extract signature
     final Element aSignatureElement = XMLHelper.getFirstChildElement (eSignatureRoot);
 
-    if (true)
+    if (false)
       LOGGER.info ("Created signature:\n" + XMLWriter.getNodeAsString (aSignatureElement));
 
     if (false)
@@ -194,7 +188,7 @@ public final class XMLDSigHandler
       eDoc.setAttribute ("RefURI", "e-invoice.xml");
       final IMicroElement eBase64 = eDoc.appendElement (NS_DSS2, "Base64Data");
       final IMicroElement eValue = eBase64.appendElement (NS_DSS2, "Value");
-      eValue.appendText (Base64.encodeBytes (_getAsBytesTransformer (aInvoice), Base64.DO_BREAK_LINES));
+      eValue.appendText (Base64.encodeBytes (_getAsBytesCanonicalized (aInvoice), true ? 0 : Base64.DO_BREAK_LINES));
     }
     {
       final IMicroElement eOptionalInputs = eRoot.appendElement (NS_ETSIVAL, "OptionalInputs");
@@ -219,7 +213,7 @@ public final class XMLDSigHandler
       eBase64Signature.setAttribute ("MimeType", CMimeType.APPLICATION_XML.getAsString ());
       final IMicroElement eValue = eBase64Signature.appendElement (NS_DSS2, "Value");
       // Signature only
-      eValue.appendText (Base64.encodeBytes (_getAsBytesTransformer (aSignature), Base64.DO_BREAK_LINES));
+      eValue.appendText (Base64.encodeBytes (_getAsBytesTransformer2 (aSignature), true ? 0 : Base64.DO_BREAK_LINES));
     }
     return aVerifyRequestDoc;
   }
