@@ -1,6 +1,5 @@
 package at.gv.brz.futuretrust.cc;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -32,7 +31,6 @@ import com.helger.httpclient.response.ResponseHandlerMicroDom;
 import com.helger.security.keystore.EKeyStoreType;
 import com.helger.security.keystore.KeyStoreHelper;
 import com.helger.security.keystore.LoadedKey;
-import com.helger.xml.XMLHelper;
 import com.helger.xml.microdom.IMicroDocument;
 import com.helger.xml.microdom.IMicroElement;
 import com.helger.xml.microdom.serialize.MicroWriter;
@@ -108,46 +106,6 @@ public final class FTValidateFuncTest
     }
   }
 
-  // Not working, but signature contained in payload
-  @Test
-  @Ignore
-  public void testCreateNewRequestWithPredefinedSignedXML () throws Exception
-  {
-    final Document aEbiSignedDoc = DOMReader.readXMLDOM (new File ("src/test/resources/ft/ebi43-signed-ft.xml"));
-    assertNotNull (aEbiSignedDoc);
-    assertNotNull (aEbiSignedDoc.getDocumentElement ());
-
-    final Element eSignatureElement = XMLHelper.getFirstChildElement (aEbiSignedDoc.getDocumentElement ());
-    assertNotNull (eSignatureElement);
-    assertEquals ("Signature", eSignatureElement.getLocalName ());
-
-    // Create request
-    final IMicroDocument aVerifyRequestDoc = XMLDSigHandler.createVerifyRequest (aEbiSignedDoc.getDocumentElement (),
-                                                                                 eSignatureElement);
-
-    // Dump request
-    if (false)
-      SimpleFileIO.writeFile (new File ("request.xml"), MicroWriter.getNodeAsBytes (aVerifyRequestDoc, XWS));
-    if (false)
-      LOGGER.info ("Sending:\n" + MicroWriter.getNodeAsString (aVerifyRequestDoc, XWS));
-
-    final HttpClientFactory aHCFactory = new HttpClientFactory ();
-    try (HttpClientManager aMgr = new HttpClientManager (aHCFactory))
-    {
-      final HttpPost aPost = new HttpPost (VALS_URL);
-      aPost.setEntity (new ByteArrayEntity (MicroWriter.getNodeAsBytes (aVerifyRequestDoc),
-                                            ContentType.APPLICATION_XML));
-
-      final ResponseHandlerMicroDom aRH = new ResponseHandlerMicroDom (false);
-      final IMicroDocument aDoc = aMgr.execute (aPost, aRH);
-
-      // Dump response
-      LOGGER.info ("Received:\n" + MicroWriter.getNodeAsString (aDoc, XWS));
-      if (false)
-        SimpleFileIO.writeFile (new File ("response.xml"), MicroWriter.getNodeAsBytes (aDoc, XWS));
-    }
-  }
-
   @Test
   public void testCreateNewRequestFromUnsignedXML () throws Exception
   {
@@ -171,20 +129,25 @@ public final class FTValidateFuncTest
     assertNotNull (aEbiDoc);
 
     // Sign
-    final Element aSignatureElement = XMLDSigHandler.sign (aEbiDoc, aPrivateKey, aCertificate);
+    final Document aSignatureDoc = XMLDSigHandler.sign (aEbiDoc, aPrivateKey, aCertificate);
 
     // Check if signing worked
-    final XMLDSigValidationResult aResult = XMLDSigValidator.validateSignature (aEbiDoc,
-                                                                                aSignatureElement,
-                                                                                KeySelector.singletonKeySelector (aCertificate.getPublicKey ()));
-    assertTrue (aResult.isValid ());
+    if (true)
+    {
+      final XMLDSigValidationResult aResult = XMLDSigValidator.validateSignature (aEbiDoc,
+                                                                                  (Element) aSignatureDoc.getDocumentElement ()
+                                                                                                         .getFirstChild (),
+                                                                                  KeySelector.singletonKeySelector (aCertificate.getPublicKey ()));
+      assertTrue (aResult.isValid ());
+    }
 
     // Create request
     final IMicroDocument aVerifyRequestDoc = XMLDSigHandler.createVerifyRequest (aEbiDoc.getDocumentElement (),
-                                                                                 aSignatureElement);
+                                                                                 aSignatureDoc);
 
     // Dump request
-    SimpleFileIO.writeFile (new File ("request.xml"), MicroWriter.getNodeAsBytes (aVerifyRequestDoc, XWS));
+    if (false)
+      SimpleFileIO.writeFile (new File ("request.xml"), MicroWriter.getNodeAsBytes (aVerifyRequestDoc, XWS));
     if (true)
       LOGGER.info ("Sending:\n" + MicroWriter.getNodeAsString (aVerifyRequestDoc, XWS));
 
@@ -200,7 +163,8 @@ public final class FTValidateFuncTest
 
       // Dump response
       LOGGER.info ("Received:\n" + MicroWriter.getNodeAsString (aDoc, XWS));
-      SimpleFileIO.writeFile (new File ("response.xml"), MicroWriter.getNodeAsBytes (aDoc, XWS));
+      if (false)
+        SimpleFileIO.writeFile (new File ("response.xml"), MicroWriter.getNodeAsBytes (aDoc, XWS));
     }
   }
 }

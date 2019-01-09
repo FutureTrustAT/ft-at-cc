@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
+import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
@@ -14,6 +15,7 @@ import javax.xml.crypto.dsig.Transform;
 import javax.xml.crypto.dsig.XMLObject;
 import javax.xml.crypto.dsig.XMLSignature;
 import javax.xml.crypto.dsig.dom.DOMSignContext;
+import javax.xml.crypto.dsig.spec.XPathFilterParameterSpec;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -25,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.base64.Base64;
@@ -55,7 +58,7 @@ public final class XMLDSigHandler
   {}
 
   @Nonnull
-  private static byte [] _getAsBytesTransformer2 (@Nonnull final Element e)
+  private static byte [] _getAsBytesTransformer (@Nonnull final Element e)
   {
     try
     {
@@ -78,13 +81,13 @@ public final class XMLDSigHandler
   }
 
   @Nonnull
-  private static byte [] _getAsBytesCanonicalized (@Nonnull final Element e)
+  private static byte [] _getAsBytesCanonicalized (@Nonnull final Node e)
   {
     try
     {
       final Canonicalizer canon = Canonicalizer.getInstance (Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
-      final byte [] canonXmlBytes = canon.canonicalizeSubtree (e);
-      return canonXmlBytes;
+      final byte [] ret = canon.canonicalizeSubtree (e);
+      return ret;
     }
     catch (final Exception ex)
     {
@@ -92,23 +95,29 @@ public final class XMLDSigHandler
     }
   }
 
-  private static byte [] _getAsBytesMico (@Nonnull final Element e)
+  private static XMLWriterSettings _getXWS ()
   {
-    // Still not working
     final MapBasedNamespaceContext aNsCtx = new MapBasedNamespaceContext ();
     aNsCtx.addMapping ("eb", "http://www.ebinterface.at/schema/4p3/");
     aNsCtx.addMapping ("ds", "http://www.w3.org/2000/09/xmldsig#");
     final XMLWriterSettings aXWS = XMLWriterSettings.createForCanonicalization ()
                                                     .setNamespaceContext (aNsCtx)
-                                                    .setPutNamespaceContextPrefixesInRoot (true)
+                                                    .setPutNamespaceContextPrefixesInRoot (false)
                                                     .setSerializeXMLDeclaration (EXMLSerializeXMLDeclaration.EMIT_NO_NEWLINE);
-    return XMLWriter.getNodeAsBytes (e.getOwnerDocument (), aXWS);
+    return aXWS;
   }
 
   @Nonnull
-  public static Element sign (@Nonnull final Document aEbiDoc,
-                              @Nonnull final PrivateKey aPrivateKey,
-                              @Nonnull final X509Certificate aCertificate) throws Exception
+  private static byte [] _getAsBytesMicro (@Nonnull final Node e)
+  {
+    final XMLWriterSettings aXWS = _getXWS ();
+    return XMLWriter.getNodeAsBytes (XMLHelper.getOwnerDocument (e), aXWS);
+  }
+
+  @Nonnull
+  public static Document sign (@Nonnull final Document aEbiDoc,
+                               @Nonnull final PrivateKey aPrivateKey,
+                               @Nonnull final X509Certificate aCertificate) throws Exception
   {
     final XMLDSigCreator aCreator = new XMLDSigCreator ()
     {
@@ -123,6 +132,16 @@ public final class XMLDSigHandler
       protected String getDefaultTransform () throws Exception
       {
         return Transform.ENVELOPED;
+      }
+
+      protected Transform _createDefaultTransform () throws Exception
+      {
+        return getSignatureFactory ().newTransform (Transform.XPATH, new XPathFilterParameterSpec ("/Signature"));
+      }
+
+      protected List <Transform> _createTransformList () throws Exception
+      {
+        return new CommonsArrayList <> ();
       }
 
       @Override
@@ -151,29 +170,26 @@ public final class XMLDSigHandler
 
     // Create empty document that should contain the signature
     final Document aSignatureDoc = XMLFactory.newDocument ();
-    final Element eSignatureRoot = (Element) aSignatureDoc.appendChild (aSignatureDoc.createElement ("dummy-nobody-cares"));
+    final Node aSignatureParent = aSignatureDoc.appendChild (aSignatureDoc.createElement ("so-a-schas"));
 
-    final DOMSignContext aDOMSignContext = new DOMSignContext (aPrivateKey, eSignatureRoot);
+    final DOMSignContext aDOMSignContext = new DOMSignContext (aPrivateKey, aSignatureParent);
     aDOMSignContext.setDefaultNamespacePrefix (XMLDSigCreator.DEFAULT_NS_PREFIX);
 
     // Marshal, generate, and sign the enveloped signature.
     aXMLSignature.sign (aDOMSignContext);
 
-    // Extract signature
-    final Element aSignatureElement = XMLHelper.getFirstChildElement (eSignatureRoot);
+    if (true)
+      LOGGER.info ("Created signature:\n" + XMLWriter.getNodeAsString (aSignatureDoc, _getXWS ()));
 
     if (false)
-      LOGGER.info ("Created signature:\n" + XMLWriter.getNodeAsString (aSignatureElement));
+      LOGGER.info ("Created doc:\n" + XMLWriter.getNodeAsString (aEbiDoc, _getXWS ()));
 
-    if (false)
-      LOGGER.info ("Created doc:\n" + XMLWriter.getNodeAsString (aEbiDoc));
-
-    return aSignatureElement;
+    return aSignatureDoc;
   }
 
   @Nonnull
   public static IMicroDocument createVerifyRequest (@Nonnull final Element aInvoice,
-                                                    @Nonnull final Element aSignature) throws IOException
+                                                    @Nonnull final Document aSignature) throws IOException
   {
     ValueEnforcer.notNull (aInvoice, "Invoice");
     ValueEnforcer.notNull (aSignature, "Signature");
@@ -199,11 +215,10 @@ public final class XMLDSigHandler
       eRVR.appendElement (NS_VR, "IncludeRevocationValues").appendText ("false");
       eRVR.appendElement (NS_VR, "ExpandBinaryValues").appendText ("false");
       String sReportDetailLevel = "urn:oasis:names:tc:dss:1.0:profiles:verificationreport:reportdetail:noDetails";
-      if (true)
+      if (false)
         sReportDetailLevel = "urn:oasis:names:tc:dss:1.0:profiles:verificationreport:reportdetail:allDetails";
       eRVR.appendElement (NS_VR, "ReportDetailLevel").appendText (sReportDetailLevel);
-      if (true)
-        eOptionalInputs.appendElement (NS_ETSIVAL, "VerifyManifests").appendText ("true");
+      eOptionalInputs.appendElement (NS_ETSIVAL, "VerifyManifests").appendText ("false");
       eOptionalInputs.appendElement (NS_ETSIVAL, "SignVerificationReport").appendText ("true");
     }
 
@@ -213,7 +228,7 @@ public final class XMLDSigHandler
       eBase64Signature.setAttribute ("MimeType", CMimeType.APPLICATION_XML.getAsString ());
       final IMicroElement eValue = eBase64Signature.appendElement (NS_DSS2, "Value");
       // Signature only
-      eValue.appendText (Base64.encodeBytes (_getAsBytesTransformer2 (aSignature), true ? 0 : Base64.DO_BREAK_LINES));
+      eValue.appendText (Base64.encodeBytes (_getAsBytesMicro (aSignature), true ? 0 : Base64.DO_BREAK_LINES));
     }
     return aVerifyRequestDoc;
   }
