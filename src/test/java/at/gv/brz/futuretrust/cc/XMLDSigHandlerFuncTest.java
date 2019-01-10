@@ -41,14 +41,14 @@ import com.helger.xmldsig.XMLDSigValidationResult;
 import com.helger.xmldsig.XMLDSigValidator;
 import com.helger.xmldsig.keyselect.ContainedX509KeySelector;
 
-public final class FTValidateFuncTest
+public final class XMLDSigHandlerFuncTest
 {
-  private static final Logger LOGGER = LoggerFactory.getLogger (FTValidateFuncTest.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (XMLDSigHandlerFuncTest.class);
 
-  private static final XMLWriterSettings XWS = new XMLWriterSettings ().setNamespaceContext (XMLDSigHandler.getNSCtx ())
+  private static final XMLWriterSettings XWS = new XMLWriterSettings ().setNamespaceContext (FutureTrustHandler.getNSCtx ())
                                                                        .setPutNamespaceContextPrefixesInRoot (true);
-  private static final String VALS_URL = true ? "http://localhost:8001/api/validation"
-                                              : "https://futuretrust.brz.gv.at/vals-web/api/validation";
+  private static final String VALS_URL = false ? "http://localhost:8001/api/validation"
+                                               : "https://futuretrust.brz.gv.at/vals-web/api/validation";
 
   @BeforeClass
   public static void beforeClass ()
@@ -73,11 +73,11 @@ public final class FTValidateFuncTest
       final ResponseHandlerMicroDom aRH = new ResponseHandlerMicroDom (false);
       final IMicroDocument aDoc = aMgr.execute (aPost, aRH);
 
-      if (true)
+      if (false)
         LOGGER.info ("Received:\n" + MicroWriter.getNodeAsString (aDoc, XWS));
 
-      final IMicroElement aResult = aDoc.getDocumentElement ().getFirstChildElement (XMLDSigHandler.NS_DSS2, "Result");
-      final IMicroElement aResultMajor = aResult.getFirstChildElement (XMLDSigHandler.NS_DSS2, "ResultMajor");
+      final IMicroElement aResult = aDoc.getDocumentElement ().getFirstChildElement (FutureTrustHandler.NS_DSS2, "Result");
+      final IMicroElement aResultMajor = aResult.getFirstChildElement (FutureTrustHandler.NS_DSS2, "ResultMajor");
       LOGGER.info ("Result: " + aResultMajor.getTextContent ());
     }
   }
@@ -105,7 +105,7 @@ public final class FTValidateFuncTest
     assertNotNull (aEbiDoc);
 
     // Sign
-    final Element aSignatureElement = XMLDSigHandler.sign (aEbiDoc, aPrivateKey, aCertificate);
+    final Element aSignatureElement = FutureTrustHandler.sign (aEbiDoc, aPrivateKey, aCertificate);
 
     // Self-test if signing worked
     if (true)
@@ -128,7 +128,7 @@ public final class FTValidateFuncTest
     }
 
     // Create request
-    final IMicroDocument aVerifyRequestDoc = XMLDSigHandler.createVerifyRequest (aEbiDoc.getDocumentElement (),
+    final IMicroDocument aVerifyRequestDoc = FutureTrustHandler.createVerifyRequest (aEbiDoc.getDocumentElement (),
                                                                                  aSignatureElement);
 
     // Dump request

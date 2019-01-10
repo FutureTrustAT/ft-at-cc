@@ -6,6 +6,7 @@ import java.security.cert.X509Certificate;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.NotThreadSafe;
 import javax.xml.crypto.dom.DOMStructure;
 import javax.xml.crypto.dsig.CanonicalizationMethod;
 import javax.xml.crypto.dsig.DigestMethod;
@@ -21,6 +22,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.base64.Base64;
 import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.mime.CMimeType;
@@ -35,7 +38,8 @@ import com.helger.xml.serialize.write.XMLWriter;
 import com.helger.xml.serialize.write.XMLWriterSettings;
 import com.helger.xmldsig.XMLDSigCreator;
 
-public final class XMLDSigHandler
+@NotThreadSafe
+final class FutureTrustHandler
 {
   public static final String NS_DSS2 = "urn:oasis:names:tc:dss:2.0:core:schema";
   public static final String NS_ETSIVAL = "http://uri.etsi.org/119442/v1.1.1#";
@@ -54,16 +58,16 @@ public final class XMLDSigHandler
 
     NSCTX.addMapping ("dss1", "urn:oasis:names:tc:dss:1.0:core:schema");
     NSCTX.addMapping ("ades", "urn:oasis:names:tc:dss:1.0:profiles:AdES:schema#");
-    NSCTX.addMapping ("vr", XMLDSigHandler.NS_VR);
+    NSCTX.addMapping ("vr", NS_VR);
     NSCTX.addMapping ("async", "urn:oasis:names:tc:dss:1.0:profiles:asynchronousprocessing:1.0");
     NSCTX.addMapping ("timestamping", "urn:oasis:names:tc:dss:1.0:profiles:TimeStamp:schema#");
-    NSCTX.addMapping ("dss", XMLDSigHandler.NS_DSS2);
+    NSCTX.addMapping ("dss", NS_DSS2);
     NSCTX.addMapping ("saml1", "urn:oasis:names:tc:SAML:1.0:assertion");
     NSCTX.addMapping ("saml2", "urn:oasis:names:tc:SAML:2.0:assertion");
 
     NSCTX.addMapping ("xades132", "http://uri.etsi.org/01903/v1.3.2#");
     NSCTX.addMapping ("xades141", "http://uri.etsi.org/01903/v1.4.1#");
-    NSCTX.addMapping ("etsival", XMLDSigHandler.NS_ETSIVAL);
+    NSCTX.addMapping ("etsival", NS_ETSIVAL);
     NSCTX.addMapping ("ts102231", "http://uri.etsi.org/102231/v2#");
     NSCTX.addMapping ("etsivr", "http://uri.etsi.org/1191022/v1.1.1#");
 
@@ -71,18 +75,27 @@ public final class XMLDSigHandler
     NSCTX.addMapping ("vals", "http://futuretrust.eu/vals/v1.0.0#");
   }
 
-  private static final Logger LOGGER = LoggerFactory.getLogger (XMLDSigHandler.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (FutureTrustHandler.class);
 
-  private XMLDSigHandler ()
+  private FutureTrustHandler ()
   {}
 
+  @Nonnull
+  @Nonempty
+  public static String getValsURL ()
+  {
+    return false ? "http://localhost:8001/api/validation" : "https://futuretrust.brz.gv.at/vals-web/api/validation";
+  }
+
+  @Nonnull
+  @ReturnsMutableCopy
   public static MapBasedNamespaceContext getNSCtx ()
   {
     return NSCTX.getClone ();
   }
 
   @Nonnull
-  private static XMLWriterSettings _getXWS ()
+  public static XMLWriterSettings getXWS ()
   {
     final XMLWriterSettings aXWS = XMLWriterSettings.createForCanonicalization ()
                                                     .setNamespaceContext (NSCTX)
@@ -95,7 +108,7 @@ public final class XMLDSigHandler
   private static byte [] _getDocAsBytes (@Nonnull final Node e)
   {
     // Must be the document
-    return XMLWriter.getNodeAsBytes (XMLHelper.getOwnerDocument (e), _getXWS ());
+    return XMLWriter.getNodeAsBytes (XMLHelper.getOwnerDocument (e), getXWS ());
   }
 
   @Nonnull
@@ -158,10 +171,10 @@ public final class XMLDSigHandler
     final Element aSignatureElement = (Element) aDstDoc.getDocumentElement ().getFirstChild ();
 
     if (false)
-      LOGGER.info ("Created signature:\n" + XMLWriter.getNodeAsString (aSignatureElement, _getXWS ()));
+      LOGGER.info ("Created signature:\n" + XMLWriter.getNodeAsString (aSignatureElement, getXWS ()));
 
     if (false)
-      LOGGER.info ("Created doc:\n" + XMLWriter.getNodeAsString (aDstDoc, _getXWS ()));
+      LOGGER.info ("Created doc:\n" + XMLWriter.getNodeAsString (aDstDoc, getXWS ()));
 
     return aSignatureElement;
   }

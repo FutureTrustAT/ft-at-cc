@@ -26,6 +26,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.crypto.KeySelector;
 
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.entity.ContentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -37,6 +40,9 @@ import com.helger.commons.io.file.FileOperations;
 import com.helger.commons.io.file.FileSystemIterator;
 import com.helger.commons.io.file.IFileFilter;
 import com.helger.commons.string.StringHelper;
+import com.helger.httpclient.HttpClientFactory;
+import com.helger.httpclient.HttpClientManager;
+import com.helger.httpclient.response.ResponseHandlerMicroDom;
 import com.helger.security.keystore.EKeyStoreType;
 import com.helger.security.keystore.KeyStoreHelper;
 import com.helger.security.keystore.LoadedKey;
@@ -44,9 +50,11 @@ import com.helger.security.keystore.LoadedKeyStore;
 import com.helger.settings.exchange.configfile.ConfigFile;
 import com.helger.settings.exchange.configfile.ConfigFileBuilder;
 import com.helger.xml.microdom.IMicroDocument;
+import com.helger.xml.microdom.serialize.MicroWriter;
 import com.helger.xml.sax.WrappedCollectingSAXErrorHandler;
 import com.helger.xml.serialize.read.DOMReader;
 import com.helger.xml.serialize.read.DOMReaderSettings;
+import com.helger.xml.serialize.write.IXMLWriterSettings;
 import com.helger.xmldsig.XMLDSigValidationResult;
 import com.helger.xmldsig.XMLDSigValidator;
 import com.helger.xmldsig.keyselect.ContainedX509KeySelector;
@@ -56,9 +64,9 @@ import com.helger.xmldsig.keyselect.ContainedX509KeySelector;
  *
  * @author Philip Helger
  */
-public final class MainCC
+public final class MainClient
 {
-  private static final Logger LOGGER = LoggerFactory.getLogger (MainCC.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (MainClient.class);
   private static final String APP_NAME = "ft-at-cc v0.1";
   private static final Locale LOCALE = Locale.US;
 
@@ -98,6 +106,7 @@ public final class MainCC
                                             @Nonnull final File aDirResponseSuccess,
                                             @Nonnull final File aDirResponseError)
   {
+    final IXMLWriterSettings aXWS = FutureTrustHandler.getXWS ();
     for (final File aFile : new FileSystemIterator (aDirOutgoing).withFilter (IFileFilter.fileOnly ()))
     {
       LOGGER.info ("Trying to process XML file " + aFile.getName ());
@@ -111,7 +120,7 @@ public final class MainCC
         try
         {
           LOGGER.info ("Signing document");
-          final Element aSignatureElement = XMLDSigHandler.sign (aSrcDoc, aPrivateKey, aCertificate);
+          final Element aSignatureElement = FutureTrustHandler.sign (aSrcDoc, aPrivateKey, aCertificate);
 
           // Self-test if signing worked
           LOGGER.info ("Validating created signature");
@@ -123,6 +132,7 @@ public final class MainCC
               throw new IllegalStateException ("Failed to validate created signature with constant provided key: " +
                                                aResult.toString ());
 
+            // Validate with key auto-detect
             aResult = XMLDSigValidator.validateSignature (aSrcDoc, aSignatureElement, new ContainedX509KeySelector ());
             if (aResult.isInvalid ())
               throw new IllegalStateException ("Failed to validate created signature with contained key: " +
@@ -130,8 +140,23 @@ public final class MainCC
           }
 
           LOGGER.info ("Create VerifyRequest");
-          final IMicroDocument aVerifyRequestDoc = XMLDSigHandler.createVerifyRequest (aSrcDoc.getDocumentElement (),
-                                                                                       aSignatureElement);
+          final IMicroDocument aVerifyRequestDoc = FutureTrustHandler.createVerifyRequest (aSrcDoc.getDocumentElement (),
+                                                                                           aSignatureElement);
+
+          final HttpClientFactory aHCFactory = new HttpClientFactory ();
+          try (HttpClientManager aMgr = new HttpClientManager (aHCFactory))
+          {
+            final HttpPost aPost = new HttpPost (FutureTrustHandler.getValsURL ());
+            final byte [] aSendData = MicroWriter.getNodeAsBytes (aVerifyRequestDoc, aXWS);
+
+            aPost.setEntity (new ByteArrayEntity (aSendData, ContentType.APPLICATION_XML));
+
+            final ResponseHandlerMicroDom aRH = new ResponseHandlerMicroDom (false);
+            final IMicroDocument aDoc = aMgr.execute (aPost, aRH);
+
+            // Dump response
+            LOGGER.info ("Received:\n" + MicroWriter.getNodeAsString (aDoc, aXWS));
+          }
         }
         catch (final Exception ex)
         {
@@ -142,6 +167,7 @@ public final class MainCC
       if (aErrorList.isEmpty ())
       {
         // Success
+        // FileOperationManager.INSTANCE;
       }
       else
       {
