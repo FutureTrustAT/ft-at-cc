@@ -27,8 +27,9 @@
   <groupId>at.gv.brz.futuretrust</groupId>
   <artifactId>cc</artifactId>
   <version>1.0.0-SNAPSHOT</version>
-  <name>BRZ FutureTrust commandline client</name>
-  <description>Pilot application</description>
+  <packaging>war</packaging>
+  <name>BRZ FutureTrust web client</name>
+  <description>Pilot application - no risk no fun</description>
   <url>https://github.com/FutureTrustAT/ft-at-cc</url>
   <inceptionYear>2019</inceptionYear>
 
@@ -60,7 +61,9 @@
   </developers>
 
   <properties>
-    <log4j.version>2.11.1</log4j.version>
+    <m2e.jaxrs.activation>false</m2e.jaxrs.activation>
+    <m2e.jpa.activation>false</m2e.jpa.activation>
+    <m2e.jsf.activation>false</m2e.jsf.activation>
   </properties>
   
   <dependencyManagement>
@@ -76,6 +79,13 @@
         <groupId>com.helger</groupId>
         <artifactId>ph-web-parent-pom</artifactId>
         <version>9.1.0</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.helger</groupId>
+        <artifactId>ph-oton-parent-pom</artifactId>
+        <version>8.1.2</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -114,14 +124,27 @@
       <version>4.3.0-SNAPSHOT</version>
     </dependency>
     <dependency>
+      <groupId>com.helger</groupId>
+      <artifactId>ph-oton-core</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
-      <version>${log4j.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-slf4j-impl</artifactId>
-      <version>${log4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-web</artifactId>
+    </dependency>
+    
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
@@ -129,8 +152,63 @@
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.helger</groupId>
+      <artifactId>ph-oton-jetty</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   
   <build>
+    <resources>
+      <resource>
+        <directory>${basedir}/src/main/resources</directory>
+        <targetPath>${project.build.directory}/classes</targetPath>
+      </resource>
+      <resource>
+        <directory>${basedir}/src/main/webapp</directory>
+        <targetPath>${project.build.directory}/webapp-classes</targetPath>
+      </resource>
+      <resource>
+        <directory>${basedir}/src/test/resources</directory>
+        <targetPath>${project.build.directory}/test-classes</targetPath>
+      </resource>
+    </resources>
+
+    <plugins>
+      <plugin>
+        <groupId>com.helger.maven</groupId>
+        <artifactId>ph-jscompress-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>jscompress</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <forceCreation>false</forceCreation>
+          <sourceDirectory>${basedir}/src/main/webapp</sourceDirectory>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.helger.maven</groupId>
+        <artifactId>ph-csscompress-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>csscompress</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <forceCompress>false</forceCompress>
+          <removeUnnecessaryCode>true</removeUnnecessaryCode>
+          <quoteURLs>true</quoteURLs>
+          <verbose>true</verbose>
+          <sourceDirectory>${basedir}/src/main/webapp</sourceDirectory>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 </project>
