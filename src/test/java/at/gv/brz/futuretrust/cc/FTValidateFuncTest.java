@@ -34,7 +34,6 @@ import com.helger.security.keystore.LoadedKey;
 import com.helger.xml.microdom.IMicroDocument;
 import com.helger.xml.microdom.IMicroElement;
 import com.helger.xml.microdom.serialize.MicroWriter;
-import com.helger.xml.namespace.MapBasedNamespaceContext;
 import com.helger.xml.serialize.read.DOMReader;
 import com.helger.xml.serialize.write.XMLWriterSettings;
 import com.helger.xmldsig.XMLDSigSetup;
@@ -46,31 +45,7 @@ public final class FTValidateFuncTest
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (FTValidateFuncTest.class);
 
-  private static final MapBasedNamespaceContext NSCTX = new MapBasedNamespaceContext ();
-  static
-  {
-    NSCTX.addMapping ("ds", "http://www.w3.org/2000/09/xmldsig#");
-    NSCTX.addMapping ("xenc", "http://www.w3.org/2001/04/xmlenc#");
-
-    NSCTX.addMapping ("dss1", "urn:oasis:names:tc:dss:1.0:core:schema");
-    NSCTX.addMapping ("ades", "urn:oasis:names:tc:dss:1.0:profiles:AdES:schema#");
-    NSCTX.addMapping ("vr", XMLDSigHandler.NS_VR);
-    NSCTX.addMapping ("async", "urn:oasis:names:tc:dss:1.0:profiles:asynchronousprocessing:1.0");
-    NSCTX.addMapping ("timestamping", "urn:oasis:names:tc:dss:1.0:profiles:TimeStamp:schema#");
-    NSCTX.addMapping ("dss", XMLDSigHandler.NS_DSS2);
-    NSCTX.addMapping ("saml1", "urn:oasis:names:tc:SAML:1.0:assertion");
-    NSCTX.addMapping ("saml2", "urn:oasis:names:tc:SAML:2.0:assertion");
-
-    NSCTX.addMapping ("xades132", "http://uri.etsi.org/01903/v1.3.2#");
-    NSCTX.addMapping ("xades141", "http://uri.etsi.org/01903/v1.4.1#");
-    NSCTX.addMapping ("etsival", XMLDSigHandler.NS_ETSIVAL);
-    NSCTX.addMapping ("ts102231", "http://uri.etsi.org/102231/v2#");
-    NSCTX.addMapping ("etsivr", "http://uri.etsi.org/1191022/v1.1.1#");
-
-    NSCTX.addMapping ("policy", "http://www.arhs-group.com/spikeseed");
-    NSCTX.addMapping ("vals", "http://futuretrust.eu/vals/v1.0.0#");
-  }
-  private static final XMLWriterSettings XWS = new XMLWriterSettings ().setNamespaceContext (NSCTX)
+  private static final XMLWriterSettings XWS = new XMLWriterSettings ().setNamespaceContext (XMLDSigHandler.getNSCtx ())
                                                                        .setPutNamespaceContextPrefixesInRoot (true);
   private static final String VALS_URL = true ? "http://localhost:8001/api/validation"
                                               : "https://futuretrust.brz.gv.at/vals-web/api/validation";
@@ -130,29 +105,31 @@ public final class FTValidateFuncTest
     assertNotNull (aEbiDoc);
 
     // Sign
-    final Document aSignatureDoc = XMLDSigHandler.sign (aEbiDoc, aPrivateKey, aCertificate);
+    final Element aSignatureElement = XMLDSigHandler.sign (aEbiDoc, aPrivateKey, aCertificate);
 
-    // Check if signing worked
+    // Self-test if signing worked
     if (true)
     {
       final XMLDSigValidationResult aResult = XMLDSigValidator.validateSignature (aEbiDoc,
-                                                                                  (Element) aSignatureDoc.getDocumentElement ()
-                                                                                                         .getFirstChild (),
+                                                                                  aSignatureElement,
                                                                                   KeySelector.singletonKeySelector (aCertificate.getPublicKey ()));
-      assertTrue (aResult.isValid ());
+      if (aResult.isInvalid ())
+        throw new IllegalStateException ("Failed to validate created signature with constant provided key: " +
+                                         aResult.toString ());
     }
     if (true)
     {
       final XMLDSigValidationResult aResult = XMLDSigValidator.validateSignature (aEbiDoc,
-                                                                                  (Element) aSignatureDoc.getDocumentElement ()
-                                                                                                         .getFirstChild (),
+                                                                                  aSignatureElement,
                                                                                   new ContainedX509KeySelector ());
-      assertTrue (aResult.isValid ());
+      if (aResult.isInvalid ())
+        throw new IllegalStateException ("Failed to validate created signature with contained key: " +
+                                         aResult.toString ());
     }
 
     // Create request
     final IMicroDocument aVerifyRequestDoc = XMLDSigHandler.createVerifyRequest (aEbiDoc.getDocumentElement (),
-                                                                                 aSignatureDoc);
+                                                                                 aSignatureElement);
 
     // Dump request
     if (false)

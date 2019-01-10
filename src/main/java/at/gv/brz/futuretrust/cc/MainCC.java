@@ -24,11 +24,18 @@ import java.util.Locale;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.xml.crypto.KeySelector;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
+import com.helger.commons.error.SingleError;
+import com.helger.commons.error.list.ErrorList;
 import com.helger.commons.io.file.FileOperations;
+import com.helger.commons.io.file.FileSystemIterator;
+import com.helger.commons.io.file.IFileFilter;
 import com.helger.commons.string.StringHelper;
 import com.helger.security.keystore.EKeyStoreType;
 import com.helger.security.keystore.KeyStoreHelper;
@@ -36,6 +43,13 @@ import com.helger.security.keystore.LoadedKey;
 import com.helger.security.keystore.LoadedKeyStore;
 import com.helger.settings.exchange.configfile.ConfigFile;
 import com.helger.settings.exchange.configfile.ConfigFileBuilder;
+import com.helger.xml.microdom.IMicroDocument;
+import com.helger.xml.sax.WrappedCollectingSAXErrorHandler;
+import com.helger.xml.serialize.read.DOMReader;
+import com.helger.xml.serialize.read.DOMReaderSettings;
+import com.helger.xmldsig.XMLDSigValidationResult;
+import com.helger.xmldsig.XMLDSigValidator;
+import com.helger.xmldsig.keyselect.ContainedX509KeySelector;
 
 /**
  * The main class for the FutureTrust AT commandline client
@@ -78,14 +92,62 @@ public final class MainCC
     return ret;
   }
 
-  private static void _signAndSendInvoices (@Nonnull final KeyStore aKeyStore,
-                                            @Nonnull final PrivateKey aPrivateKey,
+  private static void _signAndSendInvoices (@Nonnull final PrivateKey aPrivateKey,
                                             @Nonnull final X509Certificate aCertificate,
                                             @Nonnull final File aDirOutgoing,
                                             @Nonnull final File aDirResponseSuccess,
                                             @Nonnull final File aDirResponseError)
   {
-    // XMLDSigHandler.createVerifyRequest (aInvoice, aSignature)
+    for (final File aFile : new FileSystemIterator (aDirOutgoing).withFilter (IFileFilter.fileOnly ()))
+    {
+      LOGGER.info ("Trying to process XML file " + aFile.getName ());
+
+      final ErrorList aErrorList = new ErrorList ();
+      final Document aSrcDoc = DOMReader.readXMLDOM (aFile,
+                                                     new DOMReaderSettings ().setErrorHandler (new WrappedCollectingSAXErrorHandler (aErrorList)));
+      if (aSrcDoc != null)
+      {
+        // XML is valid
+        try
+        {
+          LOGGER.info ("Signing document");
+          final Element aSignatureElement = XMLDSigHandler.sign (aSrcDoc, aPrivateKey, aCertificate);
+
+          // Self-test if signing worked
+          LOGGER.info ("Validating created signature");
+          {
+            XMLDSigValidationResult aResult = XMLDSigValidator.validateSignature (aSrcDoc,
+                                                                                  aSignatureElement,
+                                                                                  KeySelector.singletonKeySelector (aCertificate.getPublicKey ()));
+            if (aResult.isInvalid ())
+              throw new IllegalStateException ("Failed to validate created signature with constant provided key: " +
+                                               aResult.toString ());
+
+            aResult = XMLDSigValidator.validateSignature (aSrcDoc, aSignatureElement, new ContainedX509KeySelector ());
+            if (aResult.isInvalid ())
+              throw new IllegalStateException ("Failed to validate created signature with contained key: " +
+                                               aResult.toString ());
+          }
+
+          LOGGER.info ("Create VerifyRequest");
+          final IMicroDocument aVerifyRequestDoc = XMLDSigHandler.createVerifyRequest (aSrcDoc.getDocumentElement (),
+                                                                                       aSignatureElement);
+        }
+        catch (final Exception ex)
+        {
+          aErrorList.add (SingleError.builderError ().setLinkedException (ex).build ());
+        }
+      }
+
+      if (aErrorList.isEmpty ())
+      {
+        // Success
+      }
+      else
+      {
+        // Error
+      }
+    }
   }
 
   public static void main (final String [] args)
@@ -139,8 +201,7 @@ public final class MainCC
     LOGGER.info ("Response error directory is '" + aDirResponseError.getAbsolutePath () + "'");
 
     // Go go go
-    _signAndSendInvoices (aLKS.getKeyStore (),
-                          aLPK.getKeyEntry ().getPrivateKey (),
+    _signAndSendInvoices (aLPK.getKeyEntry ().getPrivateKey (),
                           (X509Certificate) aLPK.getKeyEntry ().getCertificate (),
                           aDirOutgoing,
                           aDirResponseSuccess,
