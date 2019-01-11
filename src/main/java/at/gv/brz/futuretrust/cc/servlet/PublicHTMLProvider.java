@@ -21,15 +21,22 @@ import java.util.Locale;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.string.StringHelper;
+import com.helger.css.property.ECSSProperty;
+import com.helger.html.hc.html.embedded.HCImg;
 import com.helger.html.hc.html.metadata.HCHead;
+import com.helger.html.hc.html.metadata.HCStyle;
 import com.helger.html.hc.html.root.HCHtml;
 import com.helger.html.hc.html.sections.HCBody;
+import com.helger.html.hc.html.sections.HCFooter;
 import com.helger.html.hc.html.sections.HCH1;
+import com.helger.html.hc.html.textlevel.HCSpan;
+import com.helger.html.hc.impl.HCEntityNode;
 import com.helger.photon.basic.app.appid.RequestSettings;
 import com.helger.photon.basic.app.menu.IMenuItemPage;
 import com.helger.photon.core.app.context.ISimpleWebExecutionContext;
 import com.helger.photon.core.app.context.LayoutExecutionContext;
 import com.helger.photon.core.app.html.AbstractSWECHTMLProvider;
+import com.helger.photon.core.url.LinkHelper;
 import com.helger.web.scope.IRequestWebScopeWithoutResponse;
 import com.helger.xservlet.forcedredirect.ForcedRedirectException;
 
@@ -57,6 +64,13 @@ public class PublicHTMLProvider extends AbstractSWECHTMLProvider
                                                               aMenuItem.getDisplayText (aDisplayLocale)));
 
     // TODO
-    aBody.addChild (new HCH1 ().addChild ("BRZ FutureTrust pilot client"));
+    aHead.addCSS (new HCStyle ("* { font-family: Arial, Helvetica, sans-serif; }" +
+                               "footer { background-color: #ddd; padding: 1rem; }"));
+    aBody.addChild (new HCH1 ().addChild (new HCImg ().setSrc (LinkHelper.getURLWithContext ("/imgs/FutureTrust-Logo-1.png"))
+                                                      .addStyle (ECSSProperty.WIDTH, "200px"))
+                               .addChild (new HCSpan ().addChild ("BRZ pilot client")
+                                                       .addStyle (ECSSProperty.MARGIN_LEFT, "2rem")));
+
+    aBody.addChild (new HCFooter ().addChild (HCEntityNode.newCopy ()).addChild (" 2019 BRZ GmbH"));
   }
 }

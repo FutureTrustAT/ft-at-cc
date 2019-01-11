@@ -33,8 +33,8 @@ public final class RunInJettyFT_AT_CC
   public static void main (final String [] args) throws Exception
   {
     HttpDebugger.setEnabled (false);
-    new JettyStarter (RunInJettyFT_AT_CC.class).setAllowAnnotationBasedConfig (true)
-                                               .setSessionCookieName ("FT-AT-CC-SESSION")
+    new JettyStarter (RunInJettyFT_AT_CC.class).setSessionCookieName ("FT-AT-CC-SESSION")
+                                               .setContainerIncludeJarPattern (".*/classes/.*")
                                                .run ();
   }
 }
