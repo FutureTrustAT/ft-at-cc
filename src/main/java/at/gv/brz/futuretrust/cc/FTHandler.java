@@ -39,7 +39,7 @@ import com.helger.xml.serialize.write.XMLWriterSettings;
 import com.helger.xmldsig.XMLDSigCreator;
 
 @NotThreadSafe
-final class FutureTrustHandler
+public final class FTHandler
 {
   public static final String NS_DSS2 = "urn:oasis:names:tc:dss:2.0:core:schema";
   public static final String NS_ETSIVAL = "http://uri.etsi.org/119442/v1.1.1#";
@@ -75,9 +75,9 @@ final class FutureTrustHandler
     NSCTX.addMapping ("vals", "http://futuretrust.eu/vals/v1.0.0#");
   }
 
-  private static final Logger LOGGER = LoggerFactory.getLogger (FutureTrustHandler.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (FTHandler.class);
 
-  private FutureTrustHandler ()
+  private FTHandler ()
   {}
 
   @Nonnull

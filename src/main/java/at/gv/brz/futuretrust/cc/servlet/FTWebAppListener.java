@@ -9,17 +9,21 @@ import javax.servlet.annotation.WebListener;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
 import com.helger.commons.debug.GlobalDebug;
+import com.helger.html.resource.css.ConstantCSSPathProvider;
 import com.helger.httpclient.HttpDebugger;
 import com.helger.photon.basic.app.appid.CApplicationID;
 import com.helger.photon.basic.app.appid.PhotonGlobalState;
 import com.helger.photon.basic.app.locale.ILocaleManager;
 import com.helger.photon.basic.app.menu.MenuTree;
 import com.helger.photon.basic.app.page.AbstractPage;
+import com.helger.photon.core.app.html.PhotonCSS;
 import com.helger.photon.core.servlet.WebAppListener;
 import com.helger.xservlet.requesttrack.RequestTracker;
 
+import at.gv.brz.futuretrust.cc.FTConfiguration;
+
 @WebListener
-public class FTWebAppListener extends WebAppListener
+public final class FTWebAppListener extends WebAppListener
 {
   @Override
   protected boolean shouldCheckFileAccess (@Nonnull final ServletContext aSC)
@@ -56,5 +60,18 @@ public class FTWebAppListener extends WebAppListener
     aMenuTree.createRootItem ("main", new AbstractPage ("bla")
     {});
     PhotonGlobalState.state (CApplicationID.APP_ID_PUBLIC).setMenuTree (aMenuTree);
+  }
+
+  @Override
+  protected void initUI ()
+  {
+    PhotonCSS.registerCSSIncludeForGlobal (ConstantCSSPathProvider.create ("/css/default.css"));
+  }
+
+  @Override
+  protected void initManagers ()
+  {
+    // Ensure initialization
+    FTConfiguration.getPrivateKey ();
   }
 }

@@ -45,7 +45,7 @@ public final class XMLDSigHandlerFuncTest
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (XMLDSigHandlerFuncTest.class);
 
-  private static final XMLWriterSettings XWS = new XMLWriterSettings ().setNamespaceContext (FutureTrustHandler.getNSCtx ())
+  private static final XMLWriterSettings XWS = new XMLWriterSettings ().setNamespaceContext (FTHandler.getNSCtx ())
                                                                        .setPutNamespaceContextPrefixesInRoot (true);
   private static final String VALS_URL = false ? "http://localhost:8001/api/validation"
                                                : "https://futuretrust.brz.gv.at/vals-web/api/validation";
@@ -76,8 +76,8 @@ public final class XMLDSigHandlerFuncTest
       if (false)
         LOGGER.info ("Received:\n" + MicroWriter.getNodeAsString (aDoc, XWS));
 
-      final IMicroElement aResult = aDoc.getDocumentElement ().getFirstChildElement (FutureTrustHandler.NS_DSS2, "Result");
-      final IMicroElement aResultMajor = aResult.getFirstChildElement (FutureTrustHandler.NS_DSS2, "ResultMajor");
+      final IMicroElement aResult = aDoc.getDocumentElement ().getFirstChildElement (FTHandler.NS_DSS2, "Result");
+      final IMicroElement aResultMajor = aResult.getFirstChildElement (FTHandler.NS_DSS2, "ResultMajor");
       LOGGER.info ("Result: " + aResultMajor.getTextContent ());
     }
   }
@@ -105,7 +105,7 @@ public final class XMLDSigHandlerFuncTest
     assertNotNull (aEbiDoc);
 
     // Sign
-    final Element aSignatureElement = FutureTrustHandler.sign (aEbiDoc, aPrivateKey, aCertificate);
+    final Element aSignatureElement = FTHandler.sign (aEbiDoc, aPrivateKey, aCertificate);
 
     // Self-test if signing worked
     if (true)
@@ -128,7 +128,7 @@ public final class XMLDSigHandlerFuncTest
     }
 
     // Create request
-    final IMicroDocument aVerifyRequestDoc = FutureTrustHandler.createVerifyRequest (aEbiDoc.getDocumentElement (),
+    final IMicroDocument aVerifyRequestDoc = FTHandler.createVerifyRequest (aEbiDoc.getDocumentElement (),
                                                                                  aSignatureElement);
 
     // Dump request
