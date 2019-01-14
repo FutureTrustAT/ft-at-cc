@@ -57,14 +57,12 @@ import com.helger.xmldsig.XMLDSigValidationResult;
 import com.helger.xmldsig.XMLDSigValidator;
 import com.helger.xmldsig.keyselect.ContainedX509KeySelector;
 
-public final class XMLDSigHandlerFuncTest
+public final class FTHandlerFuncTest
 {
-  private static final Logger LOGGER = LoggerFactory.getLogger (XMLDSigHandlerFuncTest.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (FTHandlerFuncTest.class);
 
   private static final XMLWriterSettings XWS = new XMLWriterSettings ().setNamespaceContext (FTHandler.getNSCtx ())
                                                                        .setPutNamespaceContextPrefixesInRoot (true);
-  private static final String VALS_URL = false ? "http://localhost:8001/api/validation"
-                                               : "https://futuretrust.brz.gv.at/vals-web/api/validation";
 
   @BeforeClass
   public static void beforeClass ()
@@ -83,7 +81,7 @@ public final class XMLDSigHandlerFuncTest
     final HttpClientFactory aHCFactory = new HttpClientFactory ();
     try (HttpClientManager aMgr = new HttpClientManager (aHCFactory))
     {
-      final HttpPost aPost = new HttpPost (VALS_URL);
+      final HttpPost aPost = new HttpPost (FTHandler.getValsURL ());
       aPost.setEntity (new FileEntity (f, ContentType.APPLICATION_XML));
 
       final ResponseHandlerMicroDom aRH = new ResponseHandlerMicroDom (false);
@@ -156,7 +154,7 @@ public final class XMLDSigHandlerFuncTest
     final HttpClientFactory aHCFactory = new HttpClientFactory ();
     try (HttpClientManager aMgr = new HttpClientManager (aHCFactory))
     {
-      final HttpPost aPost = new HttpPost (VALS_URL);
+      final HttpPost aPost = new HttpPost (FTHandler.getValsURL ());
       aPost.setEntity (new ByteArrayEntity (MicroWriter.getNodeAsBytes (aVerifyRequestDoc),
                                             ContentType.APPLICATION_XML));
 

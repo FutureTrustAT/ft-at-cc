@@ -107,7 +107,7 @@
     </dependency>
     <dependency>
       <groupId>com.helger</groupId>
-      <artifactId>ph-cli</artifactId>
+      <artifactId>ph-wsclient</artifactId>
     </dependency>
     <dependency>
       <groupId>com.helger</groupId>
@@ -130,6 +130,11 @@
     <dependency>
       <groupId>com.helger</groupId>
       <artifactId>ph-oton-bootstrap4-stub</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.helger.erechnung.gv.at</groupId>
+      <artifactId>webservice-client</artifactId>
+      <version>3.0.1-SNAPSHOT</version>
     </dependency>
 
     <dependency>
@@ -201,6 +206,23 @@
           <verbose>true</verbose>
           <sourceDirectory>${basedir}/src/main/webapp/css</sourceDirectory>
         </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+        </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

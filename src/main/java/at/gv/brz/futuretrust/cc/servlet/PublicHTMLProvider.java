@@ -38,7 +38,9 @@ import com.helger.commons.error.list.ErrorList;
 import com.helger.commons.io.file.FilenameHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.SimpleURL;
+import com.helger.commons.url.URLHelper;
 import com.helger.css.property.ECSSProperty;
+import com.helger.erechnung.erb.ws200.WS200Sender;
 import com.helger.html.hc.IHCNode;
 import com.helger.html.hc.html.embedded.HCImg;
 import com.helger.html.hc.html.grouping.HCDiv;
@@ -90,6 +92,9 @@ import com.helger.xmldsig.XMLDSigValidator;
 import com.helger.xmldsig.keyselect.ContainedX509KeySelector;
 import com.helger.xservlet.forcedredirect.ForcedRedirectException;
 
+import at.gv.brz.eproc.erb.ws.invoicedelivery._201306.DeliveryErrorDetailType;
+import at.gv.brz.eproc.erb.ws.invoicedelivery._201306.DeliveryResponseType;
+import at.gv.brz.eproc.erb.ws.invoicedelivery._201306.DeliverySettingsType;
 import at.gv.brz.futuretrust.cc.FTConfiguration;
 import at.gv.brz.futuretrust.cc.FTHandler;
 
@@ -215,42 +220,71 @@ public class PublicHTMLProvider extends AbstractSWECHTMLProvider
 
         if (aSignatureElement != null)
         {
-          // TODO send to test.erechnung
-          final IHCNode aActionKey = new HCTextNode ("Local verification");
-          try
+          if (true)
           {
-            final IMicroDocument aVerifyRequestDoc = FTHandler.createVerifyRequest (aSrcDoc.getDocumentElement (),
-                                                                                    aSignatureElement);
-
-            final HttpClientFactory aHCFactory = new HttpClientFactory ();
-            try (HttpClientManager aMgr = new HttpClientManager (aHCFactory))
+            // send to test.erechnung
+            final IHCNode aActionKey = new HCTextNode ("Send to test.e-rechnung.gv.at");
+            final WS200Sender aSender = new WS200Sender ("s000j000n466",
+                                                         "2jnrr3kw23u").setTestVersion (true)
+                                                                       .setURL (URLHelper.getAsURL ("https://txm.portal.at/at.gv.bmf.erb.test/FT2"));
+            final DeliverySettingsType aSettings = new DeliverySettingsType ();
+            aSettings.setTest (Boolean.TRUE);
+            final DeliveryResponseType aResponse = aSender.deliverInvoice (aSignatureElement.getOwnerDocument (),
+                                                                           null,
+                                                                           aSettings);
+            if (aResponse.getSuccess () != null)
+              aActions.put (aActionKey, null);
+            else
             {
-              final HttpPost aPost = new HttpPost (FTHandler.getValsURL ());
-              final byte [] aSendData = MicroWriter.getNodeAsBytes (aVerifyRequestDoc, FTHandler.getXWS ());
-
-              aPost.setEntity (new ByteArrayEntity (aSendData, ContentType.APPLICATION_XML));
-
-              final ResponseHandlerMicroDom aRH = new ResponseHandlerMicroDom (false);
-              final IMicroDocument aDoc = aMgr.execute (aPost, aRH);
-
-              // Dump response
-              final IMicroElement aResult = aDoc.getDocumentElement ()
-                                                .getFirstChildElement (FTHandler.NS_DSS2, "Result");
-              final boolean bSuccess = aResult != null &&
-                                       "urn:oasis:names:tc:dss:1.0:resultmajor:Success".equals (aResult.getTextContentTrimmed ());
-              if (bSuccess)
-                aActions.put (aActionKey, null);
-              else
-                aActions.put (aActionKey,
-                              new ErrorList (SingleError.builderError ()
-                                                        .setErrorText (MicroWriter.getNodeAsString (aDoc,
-                                                                                                    FTHandler.getXWS ()))
-                                                        .build ()));
+              final ErrorList aEL = new ErrorList ();
+              for (final DeliveryErrorDetailType aItem : aResponse.getError ().getErrorDetail ())
+                aEL.add (SingleError.builderError ()
+                                    .setErrorID (aItem.getErrorCode ())
+                                    .setErrorFieldName (aItem.getField ())
+                                    .setErrorText (aItem.getMessage ())
+                                    .build ());
+              aActions.put (aActionKey, aEL);
             }
           }
-          catch (final IOException ex)
+          else
           {
-            aActions.put (aActionKey, new ErrorList (SingleError.builderError ().setLinkedException (ex).build ()));
+            // Validate locally
+            final IHCNode aActionKey = new HCTextNode ("Local verification");
+            try
+            {
+              final IMicroDocument aVerifyRequestDoc = FTHandler.createVerifyRequest (aSrcDoc.getDocumentElement (),
+                                                                                      aSignatureElement);
+
+              final HttpClientFactory aHCFactory = new HttpClientFactory ();
+              try (HttpClientManager aMgr = new HttpClientManager (aHCFactory))
+              {
+                final HttpPost aPost = new HttpPost (FTHandler.getValsURL ());
+                final byte [] aSendData = MicroWriter.getNodeAsBytes (aVerifyRequestDoc, FTHandler.getXWS ());
+
+                aPost.setEntity (new ByteArrayEntity (aSendData, ContentType.APPLICATION_XML));
+
+                final ResponseHandlerMicroDom aRH = new ResponseHandlerMicroDom (false);
+                final IMicroDocument aDoc = aMgr.execute (aPost, aRH);
+
+                // Dump response
+                final IMicroElement aResult = aDoc.getDocumentElement ()
+                                                  .getFirstChildElement (FTHandler.NS_DSS2, "Result");
+                final boolean bSuccess = aResult != null &&
+                                         "urn:oasis:names:tc:dss:1.0:resultmajor:Success".equals (aResult.getTextContentTrimmed ());
+                if (bSuccess)
+                  aActions.put (aActionKey, null);
+                else
+                  aActions.put (aActionKey,
+                                new ErrorList (SingleError.builderError ()
+                                                          .setErrorText (MicroWriter.getNodeAsString (aDoc,
+                                                                                                      FTHandler.getXWS ()))
+                                                          .build ()));
+              }
+            }
+            catch (final IOException ex)
+            {
+              aActions.put (aActionKey, new ErrorList (SingleError.builderError ().setLinkedException (ex).build ()));
+            }
           }
         }
 
