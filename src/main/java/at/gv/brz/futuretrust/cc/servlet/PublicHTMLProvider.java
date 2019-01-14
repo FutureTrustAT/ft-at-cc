@@ -27,6 +27,8 @@ import javax.xml.xpath.XPath;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -105,6 +107,7 @@ import at.gv.brz.futuretrust.cc.FTHandler;
  */
 public class PublicHTMLProvider extends AbstractSWECHTMLProvider
 {
+  private static final Logger LOGGER = LoggerFactory.getLogger (PublicHTMLProvider.class);
   private static final String PARAM_FILE = "file";
 
   @Override
@@ -220,13 +223,14 @@ public class PublicHTMLProvider extends AbstractSWECHTMLProvider
 
         if (aSignatureElement != null)
         {
-          if (true)
+          if (false)
           {
             // send to test.erechnung
             final IHCNode aActionKey = new HCTextNode ("Send to test.e-rechnung.gv.at");
-            final WS200Sender aSender = new WS200Sender ("s000j000n466",
-                                                         "2jnrr3kw23u").setTestVersion (true)
-                                                                       .setURL (URLHelper.getAsURL ("https://txm.portal.at/at.gv.bmf.erb.test/FT2"));
+            LOGGER.info (aActionKey.getPlainText ());
+
+            final WS200Sender aSender = new WS200Sender ("s000j000n466", "2jnrr3kw23u").setTestVersion (true);
+            aSender.setURL (URLHelper.getAsURL ("https://txm.portal.at/at.gv.bmf.erb.test/FT2"));
             final DeliverySettingsType aSettings = new DeliverySettingsType ();
             aSettings.setTest (Boolean.TRUE);
             final DeliveryResponseType aResponse = aSender.deliverInvoice (aSignatureElement.getOwnerDocument (),
@@ -249,7 +253,10 @@ public class PublicHTMLProvider extends AbstractSWECHTMLProvider
           else
           {
             // Validate locally
-            final IHCNode aActionKey = new HCTextNode ("Local verification");
+            final IHCNode aActionKey = new HCSpan ().addChild ("Validation at ")
+                                                    .addChild (new HCCode ().addChild (FTHandler.getValsURL ()));
+            LOGGER.info (aActionKey.getPlainText ());
+
             try
             {
               final IMicroDocument aVerifyRequestDoc = FTHandler.createVerifyRequest (aSrcDoc.getDocumentElement (),

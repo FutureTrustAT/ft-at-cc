@@ -206,6 +206,8 @@ public final class FTHandler
     final IMicroElement eRoot = aVerifyRequestDoc.appendElement (NS_ETSIVAL, "VerifyRequest");
     eRoot.setAttribute ("RequestID", UUID.randomUUID ().toString ());
     eRoot.appendElement (NS_DSS2, "Profile").appendText ("http://uri.etsi.org/19442/v1.1.1/validationprofile#");
+
+    if (false)
     {
       final IMicroElement eInputDocs = eRoot.appendElement (NS_ETSIVAL, "InputDocuments");
       final IMicroElement eDoc = eInputDocs.appendElement (NS_DSS2, "Document");
@@ -217,6 +219,16 @@ public final class FTHandler
     }
     {
       final IMicroElement eOptionalInputs = eRoot.appendElement (NS_ETSIVAL, "OptionalInputs");
+
+      {
+        final IMicroElement eSignatureObject = eOptionalInputs.appendElement (NS_ETSIVAL, "DocumentWithSignature");
+        final IMicroElement eDocument = eSignatureObject.appendElement (NS_DSS2, "Document");
+        final IMicroElement eBase64Data = eDocument.appendElement (NS_DSS2, "Base64Data");
+        eBase64Data.setAttribute ("MimeType", CMimeType.APPLICATION_XML.getAsString ());
+        final IMicroElement eValue = eBase64Data.appendElement (NS_DSS2, "Value");
+        eValue.appendText (Base64.encodeBytes (_getDocAsBytes (aSignatureNode), Base64.DO_BREAK_LINES));
+      }
+
       eOptionalInputs.appendElement (NS_ETSIVAL, "ReturnVerificationTimeInfo").appendText ("true");
       final IMicroElement eRVR = eOptionalInputs.appendElement (NS_VR, "ReturnVerificationReport");
       eRVR.appendElement (NS_VR, "IncludeVerifier").appendText ("true");
@@ -232,6 +244,7 @@ public final class FTHandler
       eOptionalInputs.appendElement (NS_ETSIVAL, "SignVerificationReport").appendText ("true");
     }
 
+    if (false)
     {
       final IMicroElement eSignatureObject = eRoot.appendElement (NS_ETSIVAL, "SignatureObject");
       final IMicroElement eBase64Signature = eSignatureObject.appendElement (NS_DSS2, "Base64Signature");
