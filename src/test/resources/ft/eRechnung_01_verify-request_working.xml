@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+
+    Copyright (C) 2019 BRZ
+    philip[at]helger[dot]com
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
 <etsival:VerifyRequest xmlns:etsival="http://uri.etsi.org/119442/v1.1.1#" xmlns:vals="http://futuretrust.eu/vals/v1.0.0#" xmlns:dss="urn:oasis:names:tc:dss:2.0:core:schema" xmlns:tsl="http://uri.etsi.org/102231/v2#" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:saml="urn:oasis:names:tc:SAML:1.0:assertion" xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" xmlns:etsivr="http://uri.etsi.org/1191022/v1.1.1#" xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" xmlns:vr="urn:oasis:names:tc:dss:1.0:profiles:verificationreport:schema#" xmlns:dss1="urn:oasis:names:tc:dss:1.0:core:schema" xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" RequestID="c37f5cb3-4915-46dd-8cb2-4d2202bbf21a">
     <dss:Profile>http://uri.etsi.org/19442/v1.1.1/validationprofile#</dss:Profile>
     <etsival:InputDocuments>

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015-2018 Philip Helger (www.helger.com)
+ * Copyright (C) 2019 BRZ
  * philip[at]helger[dot]com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -169,8 +169,8 @@ public class PublicHTMLProvider extends AbstractSWECHTMLProvider
             {
               // Sign document
               aSignatureElement = FTHandler.sign (aSrcDoc,
-                                                           FTConfiguration.getPrivateKey (),
-                                                           FTConfiguration.getCertificate ());
+                                                  FTConfiguration.getPrivateKey (),
+                                                  FTConfiguration.getCertificate ());
 
               // Self-test if signing worked
               XMLDSigValidationResult aResult = XMLDSigValidator.validateSignature (aSrcDoc,
@@ -220,7 +220,7 @@ public class PublicHTMLProvider extends AbstractSWECHTMLProvider
           try
           {
             final IMicroDocument aVerifyRequestDoc = FTHandler.createVerifyRequest (aSrcDoc.getDocumentElement (),
-                                                                                             aSignatureElement);
+                                                                                    aSignatureElement);
 
             final HttpClientFactory aHCFactory = new HttpClientFactory ();
             try (HttpClientManager aMgr = new HttpClientManager (aHCFactory))
