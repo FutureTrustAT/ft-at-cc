@@ -97,6 +97,7 @@ public final class FTHandlerFuncTest
   }
 
   @Test
+  @Ignore
   public void testCreateNewRequestFromUnsignedXML () throws Exception
   {
     // Load keystore and key

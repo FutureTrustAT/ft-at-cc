@@ -84,6 +84,7 @@ import com.helger.web.scope.IRequestWebScopeWithoutResponse;
 import com.helger.xml.microdom.IMicroDocument;
 import com.helger.xml.microdom.IMicroElement;
 import com.helger.xml.microdom.serialize.MicroWriter;
+import com.helger.xml.namespace.MapBasedNamespaceContext;
 import com.helger.xml.sax.WrappedCollectingSAXErrorHandler;
 import com.helger.xml.serialize.read.DOMReader;
 import com.helger.xml.serialize.read.DOMReaderSettings;
@@ -146,7 +147,7 @@ public class PublicHTMLProvider extends AbstractSWECHTMLProvider
         final Document aSrcDoc;
         {
           final IHCNode aActionKey = new HCSpan ().addChild ("XML parsing ")
-                                                  .addChild (new HCCode ().addChild (FilenameHelper.getBaseName (aFile.getName ())));
+                                                  .addChild (new HCCode ().addChild (FilenameHelper.getWithoutPath (aFile.getName ())));
           final ErrorList aErrorList = new ErrorList ();
           aSrcDoc = DOMReader.readXMLDOM (new FileItemResource (aFile),
                                           new DOMReaderSettings ().setErrorHandler (new WrappedCollectingSAXErrorHandler (aErrorList)));
@@ -223,14 +224,22 @@ public class PublicHTMLProvider extends AbstractSWECHTMLProvider
 
         if (aSignatureElement != null)
         {
-          if (false)
+          if (true)
           {
             // send to test.erechnung
-            final IHCNode aActionKey = new HCTextNode ("Send to test.e-rechnung.gv.at");
+            final String sURL = "https://txm.portal.at/at.gv.bmf.erb.test/FT2";
+            final IHCNode aActionKey = new HCSpan ().addChild ("Send to ").addChild (new HCCode ().addChild (sURL));
             LOGGER.info (aActionKey.getPlainText ());
 
-            final WS200Sender aSender = new WS200Sender ("s000j000n466", "2jnrr3kw23u").setTestVersion (true);
-            aSender.setURL (URLHelper.getAsURL ("https://txm.portal.at/at.gv.bmf.erb.test/FT2"));
+            final MapBasedNamespaceContext aNSCtx = FTHandler.getNSCtx ();
+            aNSCtx.addMapping ("eb", aSrcDoc.getDocumentElement ().getNamespaceURI ());
+
+            final WS200Sender aSender = new WS200Sender ("s000j000n466", "2jnrr3kw23u");
+            aSender.setTestVersion (true);
+            aSender.setURL (URLHelper.getAsURL (sURL));
+            aSender.setNamespaceContext (aNSCtx);
+            aSender.setDebugMode (true);
+
             final DeliverySettingsType aSettings = new DeliverySettingsType ();
             aSettings.setTest (Boolean.TRUE);
             final DeliveryResponseType aResponse = aSender.deliverInvoice (aSignatureElement.getOwnerDocument (),
