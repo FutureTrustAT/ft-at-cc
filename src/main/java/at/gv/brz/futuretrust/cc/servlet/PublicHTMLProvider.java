@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2019 BRZ
+ * Copyright (C) 2018-2019 BRZ
  * philip[at]helger[dot]com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -269,7 +269,8 @@ public class PublicHTMLProvider extends AbstractSWECHTMLProvider
             aSender.setTestVersion (true);
             aSender.setURL (URLHelper.getAsURL (sURL));
             aSender.setNamespaceContext (aNSCtx);
-            aSender.setDebugMode (true);
+            if (false)
+              aSender.setDebugMode (true);
 
             final DeliverySettingsType aSettings = new DeliverySettingsType ();
             aSettings.setTest (Boolean.TRUE);
@@ -422,6 +423,10 @@ public class PublicHTMLProvider extends AbstractSWECHTMLProvider
                                                                                         .toString (16))));
     }
 
-    aCont.addChild (new HCFooter ().addChild (HCEntityNode.newCopy ()).addChild (" 2019 BRZ GmbH"));
+    aCont.addChild (new HCFooter ().addChild (HCEntityNode.newCopy ())
+                                   .addChild (" 2018-2019 BRZ GmbH - Partner von ")
+                                   .addChild (new HCA ().addChild ("www.futuretrust.eu")
+                                                        .setHref (new SimpleURL ("https://www.futuretrust.eu")))
+                                   .addChild (""));
   }
 }

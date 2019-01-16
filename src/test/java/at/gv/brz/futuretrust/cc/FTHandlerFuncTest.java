@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2019 BRZ
+ * Copyright (C) 2018-2019 BRZ
  * philip[at]helger[dot]com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

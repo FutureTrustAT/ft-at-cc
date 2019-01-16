@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (C) 2019 BRZ
+    Copyright (C) 2018-2019 BRZ
     philip[at]helger[dot]com
 
     Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,7 +31,7 @@
   <name>BRZ FutureTrust web client</name>
   <description>Pilot application - no risk no fun</description>
   <url>https://github.com/FutureTrustAT/ft-at-cc</url>
-  <inceptionYear>2019</inceptionYear>
+  <inceptionYear>2018</inceptionYear>
 
   <licenses>
     <license>
@@ -206,23 +206,6 @@
           <verbose>true</verbose>
           <sourceDirectory>${basedir}/src/main/webapp/css</sourceDirectory>
         </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <configuration>
-          <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-          </descriptorRefs>
-        </configuration>
-        <executions>
-          <execution>
-            <id>make-assembly</id>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>
