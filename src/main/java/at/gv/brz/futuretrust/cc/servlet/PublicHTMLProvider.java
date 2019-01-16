@@ -146,6 +146,7 @@ public class PublicHTMLProvider extends AbstractSWECHTMLProvider
         final ICommonsOrderedMap <IHCNode, ErrorList> aActions = new CommonsLinkedHashMap <> ();
 
         final Document aSrcDoc;
+        boolean bValidEbiVersion = false;
         {
           final IHCNode aActionKey = new HCSpan ().addChild ("XML parsing ")
                                                   .addChild (new HCCode ().addChild (FilenameHelper.getWithoutPath (aFile.getName ())));
@@ -178,6 +179,7 @@ public class PublicHTMLProvider extends AbstractSWECHTMLProvider
                   eVersion == EEbInterfaceVersion.V43)
               {
                 aActions.put (new HCSpan ().addChild ("ebInterface " + eVersion.name ()), null);
+                bValidEbiVersion = true;
               }
               else
               {
@@ -191,7 +193,7 @@ public class PublicHTMLProvider extends AbstractSWECHTMLProvider
         }
 
         Element aSignatureElement = null;
-        if (aSrcDoc != null)
+        if (aSrcDoc != null && bValidEbiVersion)
         {
           final IHCNode aActionKey = new HCTextNode ("Signing XML");
           try
@@ -274,6 +276,7 @@ public class PublicHTMLProvider extends AbstractSWECHTMLProvider
 
             final DeliverySettingsType aSettings = new DeliverySettingsType ();
             aSettings.setTest (Boolean.TRUE);
+            aSettings.setLanguage ("en");
             final DeliveryResponseType aResponse = aSender.deliverInvoice (aSignatureElement.getOwnerDocument (),
                                                                            null,
                                                                            aSettings);
