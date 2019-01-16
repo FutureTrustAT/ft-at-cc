@@ -13,6 +13,7 @@ Use this client to sign and send electronic invoices to `test.e-rechnung.gv.at` 
 # Configuration
 
 The configuration file `config.properties` contains all settings available for the client to run.
+Alternatively you can specify the path to the configuration file via the environment variable `FT_AT_CONFIG` or via the system property `ft-at-cc-configuration-file` (use e.g. as `-Dft-at-cc-configuration-file=/path/to/configfile` on the Java commandline). The environment variable has highest precedence, than the system property and finally the local predefined filename `config.properties`.
 
 * **`keystore.type`**: the type of the keystore. Must be either `JKS` (Java Key Store) or `PKCS12` (PKCS12 Key Store). The default is `JKS`.
 * **`keystore.path`**: the absolute path to the keystore file.
