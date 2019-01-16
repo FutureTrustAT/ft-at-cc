@@ -39,6 +39,7 @@ import com.helger.commons.error.SingleError;
 import com.helger.commons.error.list.ErrorList;
 import com.helger.commons.io.file.FilenameHelper;
 import com.helger.commons.string.StringHelper;
+import com.helger.commons.timing.StopWatch;
 import com.helger.commons.url.SimpleURL;
 import com.helger.commons.url.URLHelper;
 import com.helger.css.property.ECSSProperty;
@@ -141,6 +142,7 @@ public class PublicHTMLProvider extends AbstractSWECHTMLProvider
 
       if (aFormErrors.isEmpty ())
       {
+        final StopWatch aSW = StopWatch.createdStarted ();
         final ICommonsOrderedMap <IHCNode, ErrorList> aActions = new CommonsLinkedHashMap <> ();
 
         final Document aSrcDoc;
@@ -320,6 +322,9 @@ public class PublicHTMLProvider extends AbstractSWECHTMLProvider
                                                   .getFirstChildElement (FTHandler.NS_DSS2, "Result");
                 final boolean bSuccess = aResult != null &&
                                          "urn:oasis:names:tc:dss:1.0:resultmajor:Success".equals (aResult.getTextContentTrimmed ());
+                if (LOGGER.isInfoEnabled ())
+                  LOGGER.info ("Received response from eRechnung.gv.at - " + (bSuccess ? "success" : "error"));
+
                 if (bSuccess)
                   aActions.put (aActionKey, null);
                 else
@@ -373,6 +378,9 @@ public class PublicHTMLProvider extends AbstractSWECHTMLProvider
             }
           }
         }
+        aSW.stop ();
+        if (LOGGER.isInfoEnabled ())
+          LOGGER.info ("Processing took " + aSW.getMillis () + " milliseconds");
         aExecutionResult = aBox;
       }
     }
