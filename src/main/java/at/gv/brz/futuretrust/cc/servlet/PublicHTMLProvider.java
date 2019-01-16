@@ -42,6 +42,7 @@ import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.SimpleURL;
 import com.helger.commons.url.URLHelper;
 import com.helger.css.property.ECSSProperty;
+import com.helger.ebinterface.EEbInterfaceVersion;
 import com.helger.erechnung.erb.ws200.WS200Sender;
 import com.helger.html.hc.IHCNode;
 import com.helger.html.hc.html.embedded.HCImg;
@@ -155,8 +156,38 @@ public class PublicHTMLProvider extends AbstractSWECHTMLProvider
           if (aSrcDoc == null)
             aActions.put (aActionKey, aErrorList);
           else
+          {
             // XML is valid
             aActions.put (aActionKey, null);
+
+            // check ebInterface Version
+            final String sNamespaceURI = aSrcDoc.getDocumentElement () == null ? null : aSrcDoc.getDocumentElement ()
+                                                                                               .getNamespaceURI ();
+            final EEbInterfaceVersion eVersion = EEbInterfaceVersion.getFromNamespaceURIOrNull (sNamespaceURI);
+            if (eVersion == null)
+            {
+              aActions.put (new HCSpan ().addChild ("ebInterface version"),
+                            new ErrorList (SingleError.builderError ()
+                                                      .setErrorText ("The provided XML is not an ebInterface document")
+                                                      .build ()));
+            }
+            else
+            {
+              if (eVersion == EEbInterfaceVersion.V41 ||
+                  eVersion == EEbInterfaceVersion.V42 ||
+                  eVersion == EEbInterfaceVersion.V43)
+              {
+                aActions.put (new HCSpan ().addChild ("ebInterface " + eVersion.name ()), null);
+              }
+              else
+              {
+                aActions.put (new HCSpan ().addChild ("ebInterface " + eVersion.name ()),
+                              new ErrorList (SingleError.builderError ()
+                                                        .setErrorText ("Unsupported version. Only 4.1, 4.2 and 4.3 are supported.")
+                                                        .build ()));
+              }
+            }
+          }
         }
 
         Element aSignatureElement = null;
@@ -339,7 +370,7 @@ public class PublicHTMLProvider extends AbstractSWECHTMLProvider
       aForm.setEncTypeFileUpload ();
       aForm.setLeft (0);
       aForm.addFormGroup (new BootstrapFormGroup ().setCtrl (new BootstrapFileUpload (PARAM_FILE, aDisplayLocale))
-                                                   .setHelpText (new HCSpan ().addChild ("Select the ebInterface 4.x file that should be signed and send to ")
+                                                   .setHelpText (new HCSpan ().addChild ("Select the ebInterface 4.1/4.2/4.3 file that should be signed and send to ")
                                                                               .addChild (new HCA (new SimpleURL ("https://test.e-rechnung.gv.at")).addChild ("test.e-rechnung.gv.at")
                                                                                                                                                   .setTargetBlank ())
                                                                               .addChild (" for validation."))
