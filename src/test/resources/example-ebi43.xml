@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eb:Invoice xmlns:eb="http://www.ebinterface.at/schema/4p3/" eb:GeneratingSystem="none" eb:DocumentType="Invoice" eb:InvoiceCurrency="EUR" eb:Language="ger">
+  <eb:InvoiceNumber>brz-ft-demo-ebi43</eb:InvoiceNumber>
+  <eb:InvoiceDate>2019-01-01</eb:InvoiceDate>
+  <eb:Delivery>
+    <eb:Date>2004-12-01</eb:Date>
+    <eb:Address>
+      <eb:Salutation>Firma</eb:Salutation>
+      <eb:Name>Mustermann GmbH</eb:Name>
+      <eb:Street>Hauptstraße 10</eb:Street>
+      <eb:Town>Graz</eb:Town>
+      <eb:ZIP>8010</eb:ZIP>
+      <eb:Country>AT</eb:Country>
+      <eb:Contact>Hr. Max Mustermann</eb:Contact>
+    </eb:Address>
+  </eb:Delivery>
+  <eb:Biller>
+    <eb:VATIdentificationNumber>ATU13585627</eb:VATIdentificationNumber>
+    <eb:Address>
+      <eb:Name>Schrauben Willi</eb:Name>
+      <eb:Street>Lassallestraße 5</eb:Street>
+      <eb:Town>Wien</eb:Town>
+      <eb:ZIP>1020</eb:ZIP>
+      <eb:Country>Österreich</eb:Country>
+      <eb:Phone>+43 / 1 / 78 56 789</eb:Phone>
+      <eb:Email>philip.helger@brz.gv.at</eb:Email>
+      <eb:Contact>Sachbearbeiter Meier</eb:Contact>
+      <eb:AddressExtension>Zentrale Verwaltung Wien</eb:AddressExtension>
+    </eb:Address>
+    <eb:InvoiceRecipientsBillerID>0011025781</eb:InvoiceRecipientsBillerID>
+  </eb:Biller>
+  <eb:InvoiceRecipient>
+    <eb:VATIdentificationNumber>ATU10223006</eb:VATIdentificationNumber>
+    <eb:OrderReference>
+      <eb:OrderID>Z01</eb:OrderID>
+      <eb:ReferenceDate>2009-09-01</eb:ReferenceDate>
+      <eb:Description>Eingegangen per Fax.</eb:Description>
+    </eb:OrderReference>
+    <eb:Address>
+      <eb:Salutation>Firma</eb:Salutation>
+      <eb:Name>Mustermann GmbH</eb:Name>
+      <eb:Street>Hauptstraße 10</eb:Street>
+      <eb:Town>Graz</eb:Town>
+      <eb:ZIP>8010</eb:ZIP>
+      <eb:Country>Austria</eb:Country>
+      <eb:Contact>Hr. Max Mustermann</eb:Contact>
+    </eb:Address>
+    <eb:BillersInvoiceRecipientID>12345678</eb:BillersInvoiceRecipientID>
+  </eb:InvoiceRecipient>
+  <eb:Details>
+    <eb:ItemList>
+      <eb:ListLineItem>
+        <eb:Description>Schraubenzieher</eb:Description>
+        <eb:ArticleNumber eb:ArticleNumberType="BillersArticleNumber">I2345</eb:ArticleNumber>
+        <eb:Quantity eb:Unit="C62">100</eb:Quantity>
+        <eb:UnitPrice>10.20</eb:UnitPrice>
+        <eb:VATRate>20</eb:VATRate>
+        <eb:Delivery>
+          <eb:Date>2019-02-10</eb:Date>
+          <eb:Address>
+            <eb:Name>Austrian Embassy in Pristina</eb:Name>
+            <eb:Street>Ahmet Krasniqi Str. 22, Dragodan 1, PRISTINA</eb:Street>
+            <eb:Town />
+            <eb:ZIP />
+            <eb:Country>PT</eb:Country>
+            <eb:Phone />
+            <eb:Email />
+            <eb:Contact>.</eb:Contact>
+          </eb:Address>
+        </eb:Delivery>
+        <eb:InvoiceRecipientsOrderReference>
+          <eb:OrderID>any</eb:OrderID>
+          <eb:OrderPositionNumber>1</eb:OrderPositionNumber>
+        </eb:InvoiceRecipientsOrderReference>
+        <eb:LineItemAmount>1020.00</eb:LineItemAmount>
+      </eb:ListLineItem>
+      <eb:ListLineItem>
+        <eb:Description>Schrauben M10x50</eb:Description>
+        <eb:ArticleNumber eb:ArticleNumberType="BillersArticleNumber">V4567</eb:ArticleNumber>
+        <eb:Quantity eb:Unit="C62">1000</eb:Quantity>
+        <eb:UnitPrice>0.10</eb:UnitPrice>
+        <eb:VATRate>20</eb:VATRate>
+        <eb:InvoiceRecipientsOrderReference>
+          <eb:OrderID>any</eb:OrderID>
+          <eb:OrderPositionNumber>2</eb:OrderPositionNumber>
+        </eb:InvoiceRecipientsOrderReference>
+        <eb:LineItemAmount>100.00</eb:LineItemAmount>
+      </eb:ListLineItem>
+      <eb:ListLineItem>
+        <eb:Description>Schraubenmutter M10</eb:Description>
+        <eb:ArticleNumber eb:ArticleNumberType="BillersArticleNumber">S023</eb:ArticleNumber>
+        <eb:Quantity eb:Unit="C62">1000</eb:Quantity>
+        <eb:UnitPrice>0.01</eb:UnitPrice>
+        <eb:VATRate>20</eb:VATRate>
+        <eb:InvoiceRecipientsOrderReference>
+          <eb:OrderID>any</eb:OrderID>
+          <eb:OrderPositionNumber>3</eb:OrderPositionNumber>
+        </eb:InvoiceRecipientsOrderReference>
+        <eb:LineItemAmount>10.00</eb:LineItemAmount>
+      </eb:ListLineItem>
+      <eb:ListLineItem>
+        <eb:Description>Handbuch "Mit der Schraube auf Du und Du"</eb:Description>
+        <eb:ArticleNumber eb:ArticleNumberType="BillersArticleNumber">B762</eb:ArticleNumber>
+        <eb:Quantity eb:Unit="C62">1</eb:Quantity>
+        <eb:UnitPrice>5.00</eb:UnitPrice>
+        <eb:VATRate>10</eb:VATRate>
+        <eb:InvoiceRecipientsOrderReference>
+          <eb:OrderID>any</eb:OrderID>
+          <eb:OrderPositionNumber>4</eb:OrderPositionNumber>
+        </eb:InvoiceRecipientsOrderReference>
+        <eb:LineItemAmount>5.00</eb:LineItemAmount>
+      </eb:ListLineItem>
+    </eb:ItemList>
+  </eb:Details>
+  <eb:Tax>
+    <eb:VAT>
+      <eb:VATItem>
+        <eb:TaxedAmount>1130.00</eb:TaxedAmount>
+        <eb:VATRate>20.00</eb:VATRate>
+        <eb:Amount>226.00</eb:Amount>
+      </eb:VATItem>
+      <eb:VATItem>
+        <eb:TaxedAmount>5.00</eb:TaxedAmount>
+        <eb:VATRate>10.00</eb:VATRate>
+        <eb:Amount>0.50</eb:Amount>
+      </eb:VATItem>
+    </eb:VAT>
+    <eb:OtherTax>
+      <eb:Comment>EineNichtVATSteuer</eb:Comment>
+      <eb:Amount>0.00</eb:Amount>
+    </eb:OtherTax>
+  </eb:Tax>
+  <eb:TotalGrossAmount>1361.50</eb:TotalGrossAmount>
+  <eb:PayableAmount>1361.50</eb:PayableAmount>
+  <eb:PaymentMethod>
+    <eb:Comment>Wir ersuchen um termingerechte Bezahlung.</eb:Comment>
+    <eb:UniversalBankTransaction>
+      <eb:BeneficiaryAccount>
+        <eb:BankName>Bank Austria CA</eb:BankName>
+        <eb:BankCode eb:BankCodeType="AT">12000</eb:BankCode>
+        <eb:BIC>BKAUATWW</eb:BIC>
+        <eb:BankAccountNr>11111111111</eb:BankAccountNr>
+        <eb:IBAN>AT611904300234573201</eb:IBAN>
+        <eb:BankAccountOwner>Max Mustermann</eb:BankAccountOwner>
+      </eb:BeneficiaryAccount>
+      <eb:PaymentReference>12345678</eb:PaymentReference>
+    </eb:UniversalBankTransaction>
+  </eb:PaymentMethod>
+  <eb:PaymentConditions>
+    <eb:DueDate>2019-12-31</eb:DueDate>
+  </eb:PaymentConditions>
+</eb:Invoice>

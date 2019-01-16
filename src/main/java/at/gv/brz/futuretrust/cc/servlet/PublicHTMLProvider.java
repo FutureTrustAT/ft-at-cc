@@ -122,14 +122,14 @@ public class PublicHTMLProvider extends AbstractSWECHTMLProvider
     final HCHead aHead = aHtml.head ();
     final HCBody aBody = aHtml.body ();
 
-    aHead.setPageTitle ("BRZ FutureTrust pilot client");
+    aHead.setPageTitle ("BRZ FutureTrust Pilot Client");
 
     final BootstrapContainer aCont = aBody.addAndReturnChild (new BootstrapContainer ().setFluid (true));
     final BootstrapNavbar aNavbar = aCont.addAndReturnChild (new BootstrapNavbar ());
     aNavbar.addBrand (new HCImg ().setSrc (LinkHelper.getURLWithContext ("/imgs/FutureTrust-Logo-6.png"))
                                   .addStyle (ECSSProperty.WIDTH, "50px"),
                       new SimpleURL (aRequestScope.getURL ()));
-    aNavbar.addAndReturnText ().addChild ("BRZ FutureTrust pilot client");
+    aNavbar.addAndReturnText ().addChild ("BRZ FutureTrust Pilot Client");
 
     final FormErrorList aFormErrors = new FormErrorList ();
     IHCNode aExecutionResult = null;
@@ -338,19 +338,37 @@ public class PublicHTMLProvider extends AbstractSWECHTMLProvider
         final BootstrapBox aBox = new BootstrapBox (EBootstrapAlertType.SUCCESS);
         for (final Map.Entry <IHCNode, ErrorList> aEntry : aActions.entrySet ())
         {
-          final BootstrapRow aRow = aBox.addAndReturnChild (new BootstrapRow ());
-          aRow.createColumn (6).addChild (aEntry.getKey ()).addChild (": ");
-
-          final BootstrapCol aResultCol = aRow.createColumn (6);
-          final ErrorList aErrors = aEntry.getValue ();
-          if (aErrors == null || aErrors.isEmpty ())
+          if (true)
           {
-            aResultCol.addChild ("success");
+            final HCDiv aDiv = aBox.addAndReturnChild (new HCDiv ());
+            aDiv.addChild (aEntry.getKey ()).addChild (": ");
+            final ErrorList aErrors = aEntry.getValue ();
+            if (aErrors == null || aErrors.isEmpty ())
+            {
+              aDiv.addChild ("success");
+            }
+            else
+            {
+              aDiv.addChild (BootstrapFormHelper.createDefaultErrorNode (aErrors, aDisplayLocale, true));
+              aBox.setType (EBootstrapAlertType.DANGER);
+            }
           }
           else
           {
-            aResultCol.addChild (BootstrapFormHelper.createDefaultErrorNode (aErrors, aDisplayLocale, true));
-            aBox.setType (EBootstrapAlertType.DANGER);
+            final BootstrapRow aRow = aBox.addAndReturnChild (new BootstrapRow ());
+            aRow.createColumn (6).addChild (aEntry.getKey ()).addChild (": ");
+
+            final BootstrapCol aResultCol = aRow.createColumn (6);
+            final ErrorList aErrors = aEntry.getValue ();
+            if (aErrors == null || aErrors.isEmpty ())
+            {
+              aResultCol.addChild ("success");
+            }
+            else
+            {
+              aResultCol.addChild (BootstrapFormHelper.createDefaultErrorNode (aErrors, aDisplayLocale, true));
+              aBox.setType (EBootstrapAlertType.DANGER);
+            }
           }
         }
         aExecutionResult = aBox;
