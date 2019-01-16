@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package at.gv.brz.futuretrust.cc;
+package at.gv.brz.futuretrust.brzclient;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -56,6 +56,8 @@ import com.helger.xmldsig.XMLDSigSetup;
 import com.helger.xmldsig.XMLDSigValidationResult;
 import com.helger.xmldsig.XMLDSigValidator;
 import com.helger.xmldsig.keyselect.ContainedX509KeySelector;
+
+import at.gv.brz.futuretrust.brzclient.FTHandler;
 
 public final class FTHandlerFuncTest
 {

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package at.gv.brz.futuretrust.cc.servlet;
+package at.gv.brz.futuretrust.brzclient;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -99,8 +99,6 @@ import com.helger.xservlet.forcedredirect.ForcedRedirectException;
 import at.gv.brz.eproc.erb.ws.invoicedelivery._201306.DeliveryErrorDetailType;
 import at.gv.brz.eproc.erb.ws.invoicedelivery._201306.DeliveryResponseType;
 import at.gv.brz.eproc.erb.ws.invoicedelivery._201306.DeliverySettingsType;
-import at.gv.brz.futuretrust.cc.FTConfiguration;
-import at.gv.brz.futuretrust.cc.FTHandler;
 
 /**
  * Main class for creating HTML output

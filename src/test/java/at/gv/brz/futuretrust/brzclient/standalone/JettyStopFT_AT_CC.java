@@ -14,20 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package at.gv.brz.futuretrust.cc.servlet;
+package at.gv.brz.futuretrust.brzclient.standalone;
 
-import javax.servlet.annotation.WebServlet;
+import java.io.IOException;
 
-import com.helger.commons.http.EHttpMethod;
-import com.helger.photon.basic.xservlet.RootXServletHandler;
-import com.helger.xservlet.AbstractXServlet;
+import com.helger.photon.jetty.JettyStopper;
 
-@WebServlet (urlPatterns = "")
-public final class FTRootServlet extends AbstractXServlet
+public final class JettyStopFT_AT_CC
 {
-  public FTRootServlet ()
+  public static void main (final String [] args) throws IOException
   {
-    handlerRegistry ().registerHandler (EHttpMethod.GET, new RootXServletHandler ("/public"));
-    handlerRegistry ().copyHandlerToAll (EHttpMethod.GET);
+    new JettyStopper ().run ();
   }
 }

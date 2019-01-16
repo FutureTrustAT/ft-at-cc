@@ -22,7 +22,7 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
   <display-name>ft-at-cc</display-name>
-  <description>BRZ FutureTrust web client</description>
+  <description>BRZ FutureTrust Pilot Web Client</description>
   
   <session-config>
     <session-timeout>60</session-timeout>

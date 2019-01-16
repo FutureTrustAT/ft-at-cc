@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package at.gv.brz.futuretrust.cc;
+package at.gv.brz.futuretrust.brzclient;
 
 import java.security.KeyStore;
 import java.security.KeyStore.PrivateKeyEntry;

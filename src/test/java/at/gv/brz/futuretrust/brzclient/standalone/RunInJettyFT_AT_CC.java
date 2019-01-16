@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package at.gv.brz.futuretrust.standalone;
+package at.gv.brz.futuretrust.brzclient.standalone;
 
 import javax.annotation.concurrent.Immutable;
 
@@ -35,6 +35,7 @@ public final class RunInJettyFT_AT_CC
     HttpDebugger.setEnabled (false);
     new JettyStarter (RunInJettyFT_AT_CC.class).setSessionCookieName ("FT-AT-CC-SESSION")
                                                .setContainerIncludeJarPattern (".*/classes/.*")
+                                               .setContextPath ("")
                                                .run ();
   }
 }

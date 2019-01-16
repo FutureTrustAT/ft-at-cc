@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package at.gv.brz.futuretrust.cc.servlet;
+package at.gv.brz.futuretrust.brzclient;
 
 import java.util.Locale;
 
@@ -35,8 +35,6 @@ import com.helger.photon.basic.app.page.AbstractPage;
 import com.helger.photon.core.app.html.PhotonCSS;
 import com.helger.photon.core.servlet.WebAppListener;
 import com.helger.xservlet.requesttrack.RequestTracker;
-
-import at.gv.brz.futuretrust.cc.FTConfiguration;
 
 @WebListener
 public final class FTWebAppListener extends WebAppListener
