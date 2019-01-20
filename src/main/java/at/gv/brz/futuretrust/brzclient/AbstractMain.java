@@ -22,5 +22,4 @@ abstract class AbstractMain
 {
   protected static final int DEFAULT_PORT = JettyStarter.DEFAULT_PORT;
   protected static final int DEFAULT_STOP_PORT = JettyStarter.DEFAULT_STOP_PORT;
-  protected static final String DEFAULT_LANGUAGE = "en";
 }
