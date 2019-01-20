@@ -16,13 +16,15 @@
  */
 package at.gv.brz.futuretrust.brzclient;
 
-import javax.servlet.annotation.WebServlet;
-
 import com.helger.commons.http.EHttpMethod;
 import com.helger.photon.basic.xservlet.RootXServletHandler;
 import com.helger.xservlet.AbstractXServlet;
 
-@WebServlet (urlPatterns = "")
+/**
+ * Root servlet to redirect to /public
+ * 
+ * @author Philip Helger
+ */
 public final class FTRootServlet extends AbstractXServlet
 {
   public FTRootServlet ()

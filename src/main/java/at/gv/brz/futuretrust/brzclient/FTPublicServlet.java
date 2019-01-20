@@ -18,8 +18,6 @@ package at.gv.brz.futuretrust.brzclient;
 
 import java.util.EnumSet;
 
-import javax.servlet.annotation.WebServlet;
-
 import com.helger.commons.http.EHttpMethod;
 import com.helger.photon.basic.app.appid.CApplicationID;
 import com.helger.photon.basic.app.appid.XServletFilterAppIDExplicit;
@@ -30,10 +28,9 @@ import com.helger.xservlet.AbstractXServlet;
 
 /**
  * The main action servlet.
- * 
+ *
  * @author Philip Helger
  */
-@WebServlet (urlPatterns = "/public")
 public final class FTPublicServlet extends AbstractXServlet
 {
   public FTPublicServlet ()

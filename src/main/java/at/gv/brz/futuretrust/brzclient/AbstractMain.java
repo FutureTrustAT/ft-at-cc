@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018-2019 BRZ
+ * Copyright (C) 2014-2019 Philip Helger (www.helger.com)
  * philip[at]helger[dot]com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,16 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package at.gv.brz.futuretrust.brzclient.standalone;
+package at.gv.brz.futuretrust.brzclient;
 
-import java.io.IOException;
+import com.helger.photon.jetty.JettyStarter;
 
-import com.helger.photon.jetty.JettyStopper;
-
-public final class JettyStopFT_AT_CC
+abstract class AbstractMain
 {
-  public static void main (final String [] args) throws IOException
-  {
-    new JettyStopper ().run ();
-  }
+  protected static final int DEFAULT_PORT = JettyStarter.DEFAULT_PORT;
+  protected static final int DEFAULT_STOP_PORT = JettyStarter.DEFAULT_STOP_PORT;
+  protected static final String DEFAULT_LANGUAGE = "en";
 }

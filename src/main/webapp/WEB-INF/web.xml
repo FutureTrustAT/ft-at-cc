@@ -31,4 +31,26 @@
   <welcome-file-list>
     <welcome-file>public</welcome-file>
   </welcome-file-list>
+  
+  <listener>
+    <listener-class>at.gv.brz.futuretrust.brzclient.FTWebAppListener</listener-class>
+  </listener>
+  
+  <servlet>
+    <servlet-name>FTRootServlet</servlet-name>
+    <servlet-class>at.gv.brz.futuretrust.brzclient.FTRootServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FTRootServlet</servlet-name>
+    <url-pattern></url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>FTPublicServlet</servlet-name>
+    <servlet-class>at.gv.brz.futuretrust.brzclient.FTPublicServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FTPublicServlet</servlet-name>
+    <url-pattern>/public</url-pattern>
+  </servlet-mapping>
 </web-app>

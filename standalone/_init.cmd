@@ -21,4 +21,6 @@ set OPT=-server
 set PV_START="%JAVA_HOME%\bin\java" %OPT%
 
 :: Special EnvVar name!
-set CLASSPATH=cc-1.0.0-SNAPSHOT.jar;jars/*
+set CLASSPATH=ft-at-cc-1.0.0-SNAPSHOT.jar;jars/*
+set SRC=%~dp0
+set FT_AT_CONFIG=%SRC%/standalone-config.properties

@@ -23,6 +23,7 @@ import java.security.cert.X509Certificate;
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -99,5 +100,23 @@ public class FTConfiguration
   public static PrivateKey getPrivateKey ()
   {
     return KEY.getPrivateKey ();
+  }
+
+  @Nullable
+  public static String getGlobalDebug ()
+  {
+    return CONFIG_FILE.getAsString ("global.debug");
+  }
+
+  @Nullable
+  public static String getGlobalProduction ()
+  {
+    return CONFIG_FILE.getAsString ("global.production");
+  }
+
+  @Nullable
+  public static String getDataPath ()
+  {
+    return CONFIG_FILE.getAsString ("webapp.datapath");
   }
 }

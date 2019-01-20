@@ -17,4 +17,4 @@
 
 @echo off
 call _init.cmd
-%PV_START% at.gv.brz.futuretrust.brzclient.JettyStopFT_AT_CC %*
+%PV_START% at.gv.brz.futuretrust.brzclient.MainStop %*

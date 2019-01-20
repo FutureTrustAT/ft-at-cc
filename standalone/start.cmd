@@ -17,4 +17,4 @@
 
 @echo off
 call _init.cmd
-start "BRZ FutureTrust Pilot Client" %PV_START% at.gv.brz.futuretrust.brzclient.RunInJettyFT_AT_CC %*
+start "BRZ FutureTrust Pilot Client" %PV_START% at.gv.brz.futuretrust.brzclient.MainStart %*

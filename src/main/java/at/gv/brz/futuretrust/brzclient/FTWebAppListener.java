@@ -20,11 +20,11 @@ import java.util.Locale;
 
 import javax.annotation.Nonnull;
 import javax.servlet.ServletContext;
-import javax.servlet.annotation.WebListener;
 
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
 import com.helger.commons.debug.GlobalDebug;
+import com.helger.commons.system.SystemProperties;
 import com.helger.html.resource.css.ConstantCSSPathProvider;
 import com.helger.httpclient.HttpDebugger;
 import com.helger.photon.basic.app.appid.CApplicationID;
@@ -32,13 +32,44 @@ import com.helger.photon.basic.app.appid.PhotonGlobalState;
 import com.helger.photon.basic.app.locale.ILocaleManager;
 import com.helger.photon.basic.app.menu.MenuTree;
 import com.helger.photon.basic.app.page.AbstractPage;
+import com.helger.photon.bootstrap4.servlet.WebAppListenerBootstrap;
 import com.helger.photon.core.app.html.PhotonCSS;
-import com.helger.photon.core.servlet.WebAppListener;
 import com.helger.xservlet.requesttrack.RequestTracker;
 
-@WebListener
-public final class FTWebAppListener extends WebAppListener
+public final class FTWebAppListener extends WebAppListenerBootstrap
 {
+  public static final String SYS_PROP_SERVLET_CONTEXT_BASE = "servletContextBase";
+
+  @Override
+  protected String getInitParameterDebug (@Nonnull final ServletContext aSC)
+  {
+    return FTConfiguration.getGlobalDebug ();
+  }
+
+  @Override
+  protected String getInitParameterProduction (@Nonnull final ServletContext aSC)
+  {
+    return FTConfiguration.getGlobalProduction ();
+  }
+
+  @Override
+  @Nonnull
+  protected String getServletContextPath (@Nonnull final ServletContext aSC) throws IllegalStateException
+  {
+    // Set in MainStart
+    final String ret = SystemProperties.getPropertyValueOrNull (SYS_PROP_SERVLET_CONTEXT_BASE);
+    if (ret != null)
+      return ret;
+
+    return super.getServletContextPath (aSC);
+  }
+
+  @Override
+  protected String getDataPath (@Nonnull final ServletContext aSC)
+  {
+    return FTConfiguration.getDataPath ();
+  }
+
   @Override
   protected boolean shouldCheckFileAccess (@Nonnull final ServletContext aSC)
   {

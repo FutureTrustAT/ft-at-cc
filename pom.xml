@@ -25,9 +25,9 @@
     <version>1.10.7</version>
   </parent>
   <groupId>at.gv.brz.futuretrust</groupId>
-  <artifactId>cc</artifactId>
+  <artifactId>ft-at-cc</artifactId>
   <version>1.0.0-SNAPSHOT</version>
-  <packaging>war</packaging>
+  <packaging>jar</packaging>
   <name>BRZ FutureTrust web client</name>
   <description>Pilot application - no risk no fun</description>
   <url>https://github.com/FutureTrustAT/ft-at-cc</url>
@@ -111,6 +111,10 @@
     </dependency>
     <dependency>
       <groupId>com.helger</groupId>
+      <artifactId>ph-cli</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.helger</groupId>
       <artifactId>ph-httpclient</artifactId>
     </dependency>
     <dependency>
@@ -178,7 +182,7 @@
       </resource>
       <resource>
         <directory>${basedir}/src/main/webapp</directory>
-        <targetPath>${project.build.directory}/webapp-classes</targetPath>
+        <targetPath>${project.build.directory}/classes</targetPath>
       </resource>
       <resource>
         <directory>${basedir}/src/test/resources</directory>
