@@ -9,6 +9,16 @@ Use this client to sign and send electronic invoices to `test.e-rechnung.gv.at` 
 * Java JRE or JDK version 8 or later must be installed
 * The `JAVA_HOME` environment variable must be set to the matching path of the JRE/JDK
 * A certificate key must be available in an "PKCS12" or "JKS" keystore file format
+* An example e-Invoice must be available. Example invoices are shipped with this project (filename `example-ebi41.xml`, `example-ebi42.xml` and `example-ebi43.xml`)
+
+# Installation
+
+* Download the latest release from https://github.com/FutureTrustAT/ft-at-cc/releases
+* Unzip in a local folder on your computer
+* Modify the file `standalone-config.properties` and adopt according to the [rules below}(#configuration)
+* Run the file `start.cmd` - a new shell window should open
+* Startup a browser and navigate to http://127.0.0.1:8080
+* Sign and send invoices via your browser 
 
 # Configuration
 
