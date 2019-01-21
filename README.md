@@ -15,10 +15,23 @@ Use this client to sign and send electronic invoices to `test.e-rechnung.gv.at` 
 
 * Download the latest release from https://github.com/FutureTrustAT/ft-at-cc/releases
 * Unzip in a local folder on your computer
-* Modify the file `standalone-config.properties` and adopt according to the [rules below}(#configuration)
-* Run the file `start.cmd` - a new shell window should open
+* Modify the file `standalone-config.properties` and adopt according to the [rules below](#configuration)
+* Run the file `start.cmd` - a new shell/console window should open
 * Startup a browser and navigate to http://127.0.0.1:8080
-* Sign and send invoices via your browser 
+* Sign and send invoices via your browser:
+    * Choose an example XML file from the release (e.g. `example-ebi41.xml`) via the "Browse" button
+    * Press "Sign and send"
+    * Upon success, a green box should appear over the input field
+    
+## Error handling
+
+* If the keystore is misconfigured, than the application startup will most likely fail. Use `start-dbg.cmd` to avoid opening a new shell/console window and try to identify based on the log messages, what went wrong. If you cannot find the error yourself, don't panic - send it by email to us (you will receive the contact email address in a separate way).
+* If your local port 8080 is already in use, try running with the commandline parameter `-p 8081` to specify a different port. Than of course you need to change the URL in your browser to use the changed port (e.g. http://127.0.0.1:8081).
+
+## Things not implemented so far
+
+* No proxy server support present - the default Java system properties can be used for this (https://docs.oracle.com/javase/8/docs/technotes/guides/net/proxies.html)
+* The scripts for startup and shutdown are only available for Window - dear Linux users, any PR is welcome.
 
 # Configuration
 
