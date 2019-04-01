@@ -16,7 +16,14 @@ Use this client to sign and send electronic invoices to `test.e-rechnung.gv.at` 
 * Download the latest release from https://github.com/FutureTrustAT/ft-at-cc/releases
 * Unzip in a local folder on your computer
 * Modify the file `standalone-config.properties` and adopt according to the [rules below](#configuration)
+
+## Linux Support
+* Use the following command on the console: `java -cp "ft-at-cc-1.0.0-SNAPSHOT.jar:jars/*" at.gv.brz.futuretrust.brzclient.MainStart`
+
+## Windows Support 
 * Run the file `start.cmd` - a new shell/console window should open
+
+## Start the eInvoice client UI
 * Startup a browser and navigate to http://127.0.0.1:8080
 * Sign and send invoices via your browser:
     * Choose an example XML file from the release (e.g. `example-ebi41.xml`) via the "Browse" button
