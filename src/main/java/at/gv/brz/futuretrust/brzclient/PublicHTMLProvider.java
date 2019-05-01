@@ -83,6 +83,7 @@ import com.helger.photon.uicore.css.CPageParam;
 import com.helger.web.fileupload.FileItemResource;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.scope.IRequestWebScopeWithoutResponse;
+import com.helger.xml.EXMLParserFeature;
 import com.helger.xml.microdom.IMicroDocument;
 import com.helger.xml.microdom.IMicroElement;
 import com.helger.xml.microdom.serialize.MicroWriter;
@@ -152,7 +153,8 @@ public class PublicHTMLProvider extends AbstractSWECHTMLProvider
                                                   .addChild (new HCCode ().addChild (FilenameHelper.getWithoutPath (aFile.getName ())));
           final ErrorList aErrorList = new ErrorList ();
           aSrcDoc = DOMReader.readXMLDOM (new FileItemResource (aFile),
-                                          new DOMReaderSettings ().setErrorHandler (new WrappedCollectingSAXErrorHandler (aErrorList)));
+                                          new DOMReaderSettings ().setErrorHandler (new WrappedCollectingSAXErrorHandler (aErrorList))
+                                                                  .setFeatureValues (EXMLParserFeature.AVOID_XML_ATTACKS));
 
           if (aSrcDoc == null)
             aActions.put (aActionKey, aErrorList);
