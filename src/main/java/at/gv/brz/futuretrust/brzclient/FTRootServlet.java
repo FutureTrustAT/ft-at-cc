@@ -17,7 +17,7 @@
 package at.gv.brz.futuretrust.brzclient;
 
 import com.helger.commons.http.EHttpMethod;
-import com.helger.photon.basic.xservlet.RootXServletHandler;
+import com.helger.photon.core.servlet.RootXServletHandler;
 import com.helger.xservlet.AbstractXServlet;
 
 /**

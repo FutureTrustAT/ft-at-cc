@@ -19,9 +19,9 @@ package at.gv.brz.futuretrust.brzclient;
 import java.util.EnumSet;
 
 import com.helger.commons.http.EHttpMethod;
-import com.helger.photon.basic.app.appid.CApplicationID;
-import com.helger.photon.basic.app.appid.XServletFilterAppIDExplicit;
-import com.helger.photon.core.app.html.IHTMLProvider;
+import com.helger.photon.app.html.IHTMLProvider;
+import com.helger.photon.core.appid.CApplicationID;
+import com.helger.photon.core.appid.XServletFilterAppIDExplicit;
 import com.helger.photon.core.servlet.AbstractApplicationXServletHandler;
 import com.helger.web.scope.IRequestWebScopeWithoutResponse;
 import com.helger.xservlet.AbstractXServlet;

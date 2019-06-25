@@ -27,13 +27,13 @@ import com.helger.commons.debug.GlobalDebug;
 import com.helger.commons.system.SystemProperties;
 import com.helger.html.resource.css.ConstantCSSPathProvider;
 import com.helger.httpclient.HttpDebugger;
-import com.helger.photon.basic.app.appid.CApplicationID;
-import com.helger.photon.basic.app.appid.PhotonGlobalState;
-import com.helger.photon.basic.app.locale.ILocaleManager;
-import com.helger.photon.basic.app.menu.MenuTree;
-import com.helger.photon.basic.app.page.AbstractPage;
+import com.helger.photon.app.html.PhotonCSS;
 import com.helger.photon.bootstrap4.servlet.WebAppListenerBootstrap;
-import com.helger.photon.core.app.html.PhotonCSS;
+import com.helger.photon.core.appid.CApplicationID;
+import com.helger.photon.core.appid.PhotonGlobalState;
+import com.helger.photon.core.locale.ILocaleManager;
+import com.helger.photon.core.menu.MenuTree;
+import com.helger.photon.core.page.AbstractPage;
 import com.helger.xservlet.requesttrack.RequestTracker;
 
 public final class FTWebAppListener extends WebAppListenerBootstrap
