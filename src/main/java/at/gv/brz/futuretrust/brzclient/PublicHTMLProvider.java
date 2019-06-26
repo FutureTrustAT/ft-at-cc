@@ -110,7 +110,7 @@ import at.gv.brz.eproc.erb.ws.invoicedelivery._201306.DeliverySettingsType;
 public class PublicHTMLProvider extends AbstractSWECHTMLProvider
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (PublicHTMLProvider.class);
-  private static final String PARAM_FILE = "file";
+  private static final String FIELD_FILE = "file";
 
   @Override
   protected void fillBody (@Nonnull final ISimpleWebExecutionContext aSWEC,
@@ -137,9 +137,9 @@ public class PublicHTMLProvider extends AbstractSWECHTMLProvider
     if (aLEC.params ().hasStringValue (CPageParam.PARAM_ACTION, CPageParam.ACTION_PERFORM))
     {
       // do it
-      final IFileItem aFile = aLEC.params ().getAsFileItem (PARAM_FILE);
+      final IFileItem aFile = aLEC.params ().getAsFileItem (FIELD_FILE);
       if (aFile == null || StringHelper.hasNoText (aFile.getName ()))
-        aFormErrors.addFieldError (PARAM_FILE, "No file was selected");
+        aFormErrors.addFieldError (FIELD_FILE, "No file was selected");
 
       if (aFormErrors.isEmpty ())
       {
@@ -399,12 +399,12 @@ public class PublicHTMLProvider extends AbstractSWECHTMLProvider
       final BootstrapForm aForm = aCardBody.addAndReturnChild (new BootstrapForm (aSWEC));
       aForm.setEncTypeFileUpload ();
       aForm.setLeft (0);
-      aForm.addFormGroup (new BootstrapFormGroup ().setCtrl (new BootstrapFileUpload (PARAM_FILE, aDisplayLocale))
+      aForm.addFormGroup (new BootstrapFormGroup ().setCtrl (new BootstrapFileUpload (FIELD_FILE, aDisplayLocale))
                                                    .setHelpText (new HCSpan ().addChild ("Select the ebInterface 4.1/4.2/4.3 file that should be signed and send to ")
                                                                               .addChild (new HCA (new SimpleURL ("https://test.e-rechnung.gv.at")).addChild ("test.e-rechnung.gv.at")
                                                                                                                                                   .setTargetBlank ())
                                                                               .addChild (" for validation."))
-                                                   .setErrorList (aFormErrors.getListOfField (PARAM_FILE)));
+                                                   .setErrorList (aFormErrors.getListOfField (FIELD_FILE)));
 
       final BootstrapButtonToolbar aToolbar = aForm.addAndReturnChild (new BootstrapButtonToolbar (aLEC));
       aToolbar.addHiddenField (CPageParam.PARAM_ACTION, CPageParam.ACTION_PERFORM);
