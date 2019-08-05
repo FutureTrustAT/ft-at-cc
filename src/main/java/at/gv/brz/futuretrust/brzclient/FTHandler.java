@@ -49,7 +49,6 @@ import com.helger.xml.microdom.IMicroDocument;
 import com.helger.xml.microdom.IMicroElement;
 import com.helger.xml.microdom.MicroDocument;
 import com.helger.xml.namespace.MapBasedNamespaceContext;
-import com.helger.xml.serialize.write.EXMLSerializeXMLDeclaration;
 import com.helger.xml.serialize.write.XMLWriter;
 import com.helger.xml.serialize.write.XMLWriterSettings;
 import com.helger.xmldsig.XMLDSigCreator;
@@ -116,7 +115,7 @@ public final class FTHandler
     final XMLWriterSettings aXWS = XMLWriterSettings.createForCanonicalization ()
                                                     .setNamespaceContext (NSCTX)
                                                     .setPutNamespaceContextPrefixesInRoot (false)
-                                                    .setSerializeXMLDeclaration (EXMLSerializeXMLDeclaration.EMIT_NO_NEWLINE);
+                                                    .setNewLineAfterXMLDeclaration (false);
     return aXWS;
   }
 
