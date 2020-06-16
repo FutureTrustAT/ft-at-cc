@@ -57,8 +57,6 @@ import com.helger.xmldsig.XMLDSigValidationResult;
 import com.helger.xmldsig.XMLDSigValidator;
 import com.helger.xmldsig.keyselect.ContainedX509KeySelector;
 
-import at.gv.brz.futuretrust.brzclient.FTHandler;
-
 public final class FTHandlerFuncTest
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (FTHandlerFuncTest.class);

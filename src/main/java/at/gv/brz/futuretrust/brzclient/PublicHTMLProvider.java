@@ -128,7 +128,7 @@ public class PublicHTMLProvider extends AbstractSWECHTMLProvider
     final BootstrapNavbar aNavbar = aCont.addAndReturnChild (new BootstrapNavbar ());
     aNavbar.addBrand (new HCImg ().setSrc (LinkHelper.getURLWithContext ("/imgs/FutureTrust-Logo-6.png"))
                                   .addStyle (ECSSProperty.WIDTH, "50px"),
-                      new SimpleURL (aRequestScope.getURL ()));
+                      new SimpleURL (aRequestScope.getURLDecoded ()));
     aNavbar.addAndReturnText ().addChild ("BRZ FutureTrust Pilot Client");
 
     final FormErrorList aFormErrors = new FormErrorList ();
@@ -435,7 +435,7 @@ public class PublicHTMLProvider extends AbstractSWECHTMLProvider
     }
 
     aCont.addChild (new HCFooter ().addChild (HCEntityNode.newCopy ())
-                                   .addChild (" 2018-2019 BRZ GmbH - Partner von ")
+                                   .addChild (" 2018-2020 BRZ GmbH - Partner von ")
                                    .addChild (new HCA ().addChild ("www.futuretrust.eu")
                                                         .setHref (new SimpleURL ("https://www.futuretrust.eu")))
                                    .addChild (""));
